@@ -117,21 +117,21 @@ try:
             print(msg.get("closing_comment"))
 
     # 6. Check All the files and see if there is a file named "VERSION"
-    if pr :        
-        files = pr.get_files()
-        print(files)
-        version_file_exist = False
-        for file in files:
-            if file.filename == 'VERSION':
-                print(f"file : {file}")
-                version_file_exist = True
-                break
-        if version_file_exist:
-            print(msg.get("check_version_file") )
-        else:
-            pr.create_issue_comment(msg.get("version_file_inexistence") )
-            print(msg.get("version_file_inexistence"))
-            pr.edit(state='closed')
+    # if VERSION_FILE :        
+    #     files = pr.get_files()
+    #     print(files)
+    #     version_file_exist = False
+    #     for file in files:
+    #         if file.filename == 'VERSION':
+    #             print(f"file : {file}")
+    #             version_file_exist = True
+    #             break
+    #     if version_file_exist:
+    #         print(msg.get("check_version_file") )
+    #     else:
+    #         pr.create_issue_comment(msg.get("version_file_inexistence") )
+    #         print(msg.get("version_file_inexistence"))
+    #         pr.edit(state='closed')
 
     # 7. Check if version name from "VERSION" already exists as tag   
     if pr and VERSION_FILE:    
@@ -149,6 +149,10 @@ try:
             pr.create_issue_comment(msg.get("tagcheck_reject") )
             print(msg.get("tagcheck_reject") )
             pr.edit(state='closed')
+    else:
+         pr.create_issue_comment(msg.get("version_file_inexistence") )
+         print(msg.get("version_file_inexistence"))
+         pr.edit(state='closed')
 
     # 8. Do not merge PR message and close the PR
     if pr:
