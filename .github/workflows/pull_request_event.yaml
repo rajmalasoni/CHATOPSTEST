@@ -21,13 +21,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Check PR Description and Target
-        uses: ./
-  tag-matcher:
-    runs-on: ubuntu-latest
-    steps: 
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Get latest tag
         id: latestTag
         run: |
           if [ -f "version.txt" ]; then
