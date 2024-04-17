@@ -17,6 +17,7 @@ try:
     MERGE_PR = os.environ.get("MERGE_PR")
     CLOSE_PR = os.environ.get("CLOSE_PR")
     VERSION_FILE = os.environ.get("VERSION_FILE")
+    print(f"print Version {VERSION_FILE}")
     EVENT = os.environ['EVENT']
     GCHAT_WEBHOOK_URL = os.environ['WEBHOOK']
     print(f"print gchat token {GCHAT_WEBHOOK_URL}")
