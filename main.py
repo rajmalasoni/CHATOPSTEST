@@ -17,6 +17,7 @@ try:
     MERGE_PR = os.environ.get("MERGE_PR")
     CLOSE_PR = os.environ.get("CLOSE_PR")
     VERSION_FILE = os.environ.get("VERSION_FILE")
+    print(f"print Version {VERSION_FILE}")
     EVENT = os.environ['EVENT']
     GCHAT_WEBHOOK_URL = os.environ['WEBHOOK']
     print(f"print gchat token {GCHAT_WEBHOOK_URL}")
@@ -64,7 +65,7 @@ try:
     print("Hello")
     # 1.Add "Stale" label to the PR if no active from 15 days
     now = datetime.now()
-
+       
     for pull in pulls:
         
         time_diff = now - pull.updated_at

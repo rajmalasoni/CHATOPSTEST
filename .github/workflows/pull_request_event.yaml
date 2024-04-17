@@ -23,17 +23,20 @@ jobs:
       - name: Check PR Description and Target
         id: latestTag
         run: |
+          cat VERSION
+          if [ -f "VERSION.txt" ]; then
             version_file=$(cat VERSION)
+            cat VERSION
             echo "version from version_file -> $version_file"
             echo "version_file=$version_file" >> $GITHUB_OUTPUT
+          fi
       - name: Match tag with version-file
         uses: ./
-    env:
-      VERSION_FILE: ${{ steps.latestTag.outputs.version_file }}
-          
+        env:
+          VERSION_FILE: ${{ steps.latestTag.outputs.version_file }}
+        
 
         
             
-              
-       
+      
       
