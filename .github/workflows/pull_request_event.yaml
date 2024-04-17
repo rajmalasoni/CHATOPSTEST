@@ -21,16 +21,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Check PR Description and Target
+        uses: ./
+  tag-matcher:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Get latest tag
         id: latestTag
         run: |
-            version_file=$(cat VERSION)
-            echo "version from version_file -> $version_file"
-            echo "version_file=$version_file" >> $GITHUB_OUTPUT
+          version_file=$(cat VERSION)
+          echo "version from version_file -> $version_file"
+          echo "version_file=$version_file" >> $GITHUB_OUTPUT
       - name: Match tag with version-file
         uses: ./
-    env:
-      VERSION_FILE: ${{ steps.latestTag.outputs.version_file }}
-          
+        env:
+          VERSION_FILE: ${{ steps.latestTag.outputs.version_file }}
+        
 
         
             

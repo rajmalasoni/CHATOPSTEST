@@ -64,7 +64,7 @@ try:
     print("Hello")
     # 1.Add "Stale" label to the PR if no active from 15 days
     now = datetime.now()
-
+       
     for pull in pulls:
         
         time_diff = now - pull.updated_at
