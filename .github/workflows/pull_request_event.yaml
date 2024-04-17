@@ -24,6 +24,7 @@ jobs:
         id: latestTag
         run: |
           cat VERSION
+          pwd
           if [ -f "VERSION.txt" ]; then
             version_file=$(cat VERSION)
             cat VERSION
