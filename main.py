@@ -160,6 +160,7 @@ try:
         print(pr)
         print(pr_number)
         print(labels)
+        print(f"hello form labels:{labels}")
         if "DO NOT MERGE" in [label.name for label in labels]:
             pr.edit(state='closed')
             pr.create_issue_comment(msg.get("label"))
@@ -169,9 +170,9 @@ try:
     # print(f"event vale ={EVENT}")
     # print(f"GCHAT_WEBHOOK_URL: ={GCHAT_WEBHOOK_URL:}")
     #
-    # if EVENT and GCHAT_WEBHOOK_URL:
-    #     message = msg.get("default")
-    #     message = msg.get(EVENT, message)
+    if EVENT and GCHAT_WEBHOOK_URL:
+        message = msg.get("default")
+        message = msg.get(EVENT, message)
     #     issue = repo.get_issue(number=pr)
     #     comments = issue.get_comments()
     #     if comments:
