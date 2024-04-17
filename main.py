@@ -18,6 +18,10 @@ try:
     CLOSE_PR = os.environ.get("CLOSE_PR")
     VERSION_FILE = os.environ.get("VERSION_FILE")
     print(f"print Version {VERSION_FILE}")
+    if VERSION_FILE :
+        print("hello from version")
+    else :
+        print("hello from no version")
     EVENT = os.environ['EVENT']
     GCHAT_WEBHOOK_URL = os.environ['WEBHOOK']
     print(f"print gchat token {GCHAT_WEBHOOK_URL}")
@@ -113,7 +117,7 @@ try:
             print(msg.get("closing_comment"))
 
     # 6. Check All the files and see if there is a file named "VERSION"
-    if pr:        
+    if pr :        
         files = pr.get_files()
         print(files)
         version_file_exist = False
