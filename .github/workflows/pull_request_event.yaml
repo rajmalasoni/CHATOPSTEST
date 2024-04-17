@@ -23,7 +23,7 @@ jobs:
       - name: Check PR Description and Target
         id: latestTag
         run: |
-          cat VERSION
+          ls
           pwd
           if [ -f "VERSION" ]; then
             echo " File is present"        
