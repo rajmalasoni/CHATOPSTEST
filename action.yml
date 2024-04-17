@@ -65,4 +65,4 @@ runs:
     VERSION_FILE: ${{ inputs.version_file }}
     EVENT: ${{ inputs.event }}
     WEBHOOK: ${{ inputs.webhook }}
-    MY_VARIABLE: ${{input.MY_VARIABLE}}
+    MY_VARIABLE: ${{inputs.MY_VARIABLE}}
