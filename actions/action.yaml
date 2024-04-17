@@ -1,0 +1,13 @@
+name: "Main action file to create tag"
+description: "composite actions"
+inputs:
+  GITHUB_TOKEN:
+    description: "Token used to access repo"
+    required: false
+runs:
+  using: "composite"
+  steps:
+    - run: git tag $(cat VERSION)
+      shell: bash
+    - run: git push origin $(cat VERSION)
+      shell: bash

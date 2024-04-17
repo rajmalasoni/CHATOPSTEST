@@ -1,0 +1,38 @@
+name: 'PR Description and Target Checker'
+on:
+  pull_request:
+    types: [opened, edited, reopened,labeled]
+   
+permissions: write-all    
+      
+env:
+  MY_VARIABLE: 'pull'
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  REPO_NAME: ${{ github.repository }}
+  PR_NUMBER: ${{ github.event.pull_request.number }}
+  EVENT: ${{ github.event.action }} 
+  WEBHOOK: ${{ secrets.GCHAT_WEBHOOK_URL}}
+  
+ 
+jobs:
+  Check-PR:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Check PR Description and Target
+        run: |
+            version_file=$(cat VERSION)
+            echo "version from version_file -> $version_file"
+            echo "version_file=$version_file" >> $GITHUB_OUTPUT
+      - name: Match tag with version-file
+        uses: ./
+    env:
+      VERSION_FILE: ${{ steps.latestTag.outputs.version_file }}
+          
+
+        
+            
+              
+       
+      
