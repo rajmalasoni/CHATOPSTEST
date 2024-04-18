@@ -8,7 +8,7 @@ try:
     g = Github(os.environ["GITHUB_TOKEN"])
     repo = g.get_repo(os.environ['REPO_NAME'])
     repo_name=os.environ['REPO_NAME']
-    print("repo_name ={repo_name}")
+    #print("repo_name ={repo_name}")
     pulls = repo.get_pulls(state='open')
 
     pr_number = int(os.environ['PR_NUMBER']) if ( os.environ['PR_NUMBER'] ) else None
@@ -18,15 +18,19 @@ try:
     CLOSE_PR = os.environ.get("CLOSE_PR")
     VERSION_FILE = os.environ.get("VERSION_FILE")
     print(f"print Version {VERSION_FILE}")
-    if VERSION_FILE :
-        print("hello from version")
-    else :
-        print("hello from no version")
     EVENT = os.environ['EVENT']
     GCHAT_WEBHOOK_URL = os.environ['WEBHOOK']
     print(f"print gchat token {GCHAT_WEBHOOK_URL}")
     event_check=os.environ['MY_VARIABLE']
-    print(f"print VARIABLE token {event_check}")
+    def send_message_to_google_chat(message, webhook_url):
+        payload = {"text": message}
+        response = requests.post(webhook_url, json=payload)
+        return response
+
+
+
+            
+    
 
     msg = {
         # 1 stale PR 
@@ -173,24 +177,8 @@ try:
     if EVENT and GCHAT_WEBHOOK_URL:
         message = msg.get("default")
         message = msg.get(EVENT, message)
-    #     issue = repo.get_issue(number=pr)
-    #     comments = issue.get_comments()
-    #     if comments:
-    #             for comment in comments:
-    #                 message += f"\n Author: {comment.user.login}\n"
-    #                 message += f"  Comment: {comment.body}\n\n"
-    #
-    #
-        payload = {
-            "text" : message
-        }
-        
-        response = requests.post(GCHAT_WEBHOOK_URL, json=payload)
-        #res = requests.post(GCHAT_WEBHOOK_URL, json={'text': message})
-        #print(res.json())
-        #print(response)
-        #print(EVENT)
-        print("hello from docker chat")
+        response = send_message_to_google_chat(message, GCHAT_WEBHOOK_URL)
+        print(response.text) 
 
 except Exception as e:
     print(f"Failed to run the job. exception: {str(e)}")      
