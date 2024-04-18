@@ -21,7 +21,7 @@ try:
     EVENT = os.environ['EVENT']
     GCHAT_WEBHOOK_URL = os.environ['WEBHOOK']
     print(f"print gchat token {GCHAT_WEBHOOK_URL}")
-    event_check=os.environ['MY_VARIABLE']
+    EVENT_CHECK=os.environ['MY_VARIABLE']
     def send_message_to_google_chat(message, webhook_url):
         payload = {"text": message}
         response = requests.post(webhook_url, json=payload)
@@ -73,52 +73,54 @@ try:
     print("Hello")
     # 1.Add "Stale" label to the PR if no active from 15 days
     now = datetime.now()
-       
-    for pull in pulls:
-        
-        time_diff = now - pull.updated_at
-        # 1. Check if the time difference is greater than the stale_days
-        if time_diff > timedelta(days=msg.get("stale_days")):
-            print(f"Pull request: {pull.number} is stale!")
-            pull.create_issue_comment( msg.get("stale_label") )
-            pull.add_to_labels('Stale')
+    if  EVENT_CHECK =='stale' :
+        print(" print from stale")
+        for pull in pulls:
+            time_diff = now - pull.updated_at
+            # 1. Check if the time difference is greater than the stale_days
+            if time_diff > timedelta(days=msg.get("stale_days")):
+                print(f"Pull request: {pull.number} is stale!")
+                pull.create_issue_comment( msg.get("stale_label") )
+                pull.add_to_labels('Stale')
 
         # 2. Close staled PR if 2 days of no activity
-        if "Stale" in [label.name for label in pull.labels]:
+            if "Stale" in [label.name for label in pull.labels]:
             # check if the time difference is greater than the stale_close_days
-            if time_diff > timedelta(days=msg.get("stale_close_days")):
-                print(f"Pull request: {pull.number} is stale and closed!")
-                print(msg.get("staled_PR_closing"))
-                pull.edit(state="closed")
-                pull.create_issue_comment(msg.get("staled_PR_closing") )
-
-        # 3.Check if the pull request targets the master branch directly
-        if pull.base.ref == 'master' and not pull.head.ref.startswith('release/'):
-            print(f"Pull request: {pull.number} was targeted to master")
-            print(msg.get("check_PR_target"))
-            pull.edit(state='closed')
-            pull.create_issue_comment(msg.get("check_PR_target") )
+                if time_diff > timedelta(days=msg.get("stale_close_days")):
+                    print(f"Pull request: {pull.number} is stale and closed!")
+                    print(msg.get("staled_PR_closing"))
+                    pull.edit(state="closed")
+                    pull.create_issue_comment(msg.get("staled_PR_closing") )
+    if EVENT_CHECK =='pull':
+        print(" print from stale")
+        for pull in pulls:
+            # 3.Check if the pull request targets the master branch directly
+            if pull.base.ref == 'master' and not pull.head.ref.startswith('release/'):
+                print(f"Pull request: {pull.number} was targeted to master")
+                print(msg.get("check_PR_target"))
+                pull.edit(state='closed')
+                pull.create_issue_comment(msg.get("check_PR_target") )
 
         # 4.Check if the pull request has a description
-        if not pull.body:
-            print(f"Pull request: {pull.number} has no description" )
-            pull.edit(state='closed')
-            pull.create_issue_comment(msg.get("check_description"))
-            print(msg.get("check_description"))
+            if not pull.body:
+                print(f"Pull request: {pull.number} has no description" )
+                pull.edit(state='closed')
+                pull.create_issue_comment(msg.get("check_description"))
+                print(msg.get("check_description"))
 
     # 5_1 Check if the Approved comment in the pull request comments
-    if MERGE_PR.__eq__('true'):
-        if pr:    
-            pr.merge(merge_method = 'merge', commit_message = msg.get("approve_merge"))
-            pr.create_issue_comment(msg.get("approve_comment"))
-            print(msg.get("approve_comment"))
+        if MERGE_PR.__eq__('true'):
+            if pr:    
+                pr.merge(merge_method = 'merge', commit_message = msg.get("approve_merge"))
+                pr.create_issue_comment(msg.get("approve_comment"))
+                print(msg.get("approve_comment"))
 
     # 5_2 Check if the Close comment in the pull request comments
-    if CLOSE_PR.__eq__('true'):
-        if pr:            
-            pr.edit(state="closed")
-            pr.create_issue_comment(msg.get("closing_comment"))
-            print(msg.get("closing_comment"))
+        if CLOSE_PR.__eq__('true'):
+            if pr:            
+                pr.edit(state="closed")
+                pr.create_issue_comment(msg.get("closing_comment"))
+                print(msg.get("closing_comment"))
 
     # 6. Check All the files and see if there is a file named "VERSION"
     # if VERSION_FILE :        
@@ -138,37 +140,37 @@ try:
     #         pr.edit(state='closed')
 
     # 7. Check if version name from "VERSION" already exists as tag   
-    if pr and VERSION_FILE:    
-        print(f"version from VERSION_FILE : {VERSION_FILE}")
-        tags = repo.get_tags()
-        tag_exist = False
-        for tag in tags:
-            if tag.name == VERSION_FILE:
-                print(f"tag : {tag.name}")
-                tag_exist = True
-                break
-        if not tag_exist:
-            print(msg.get("tagcheck_success") )
+        if pr and VERSION_FILE:    
+            print(f"version from VERSION_FILE : {VERSION_FILE}")
+            tags = repo.get_tags()
+            tag_exist = False
+            for tag in tags:
+                if tag.name == VERSION_FILE:
+                    print(f"tag : {tag.name}")
+                    tag_exist = True
+                    break
+            if not tag_exist:
+                print(msg.get("tagcheck_success") )
+            else:
+                pr.create_issue_comment(msg.get("tagcheck_reject") )
+                print(msg.get("tagcheck_reject") )
+                pr.edit(state='closed')
         else:
-            pr.create_issue_comment(msg.get("tagcheck_reject") )
-            print(msg.get("tagcheck_reject") )
+            pr.create_issue_comment(msg.get("version_file_inexistence") )
+            print(msg.get("version_file_inexistence"))
             pr.edit(state='closed')
-    else:
-         pr.create_issue_comment(msg.get("version_file_inexistence") )
-         print(msg.get("version_file_inexistence"))
-         pr.edit(state='closed')
 
     # 8. Do not merge PR message and close the PR
-    if pr:
-        labels = pr.get_labels()
-        print(pr)
-        print(pr_number)
-        print(labels)
-        print(f"hello form labels:{labels}")
-        if "DO NOT MERGE" in [label.name for label in labels]:
-            pr.edit(state='closed')
-            pr.create_issue_comment(msg.get("label"))
-            print(msg.get("label"))        
+        if pr:
+            labels = pr.get_labels()
+            print(pr)
+            print(pr_number)
+            print(labels)
+            print(f"hello form labels:{labels}")
+            if "DO NOT MERGE" in [label.name for label in labels]:
+                pr.edit(state='closed')
+                pr.create_issue_comment(msg.get("label"))
+                print(msg.get("label"))        
 
     # 9. Google chat integration with github
     # print(f"event vale ={EVENT}")
