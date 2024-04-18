@@ -177,8 +177,8 @@ try:
         message = msg.get("default")
         message = msg.get(EVENT, message)
         for n in GCHAT_MESSAGE:
-            message +=n
-            message='\n'
+            message =message +'\nIssue comment : ' + n
+            
         response = send_message_to_google_chat(message, GCHAT_WEBHOOK_URL)
         print(response.text) 
 
