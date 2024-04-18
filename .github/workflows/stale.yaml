@@ -9,6 +9,8 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
   REPO_NAME: ${{ github.repository }}
   EVENT_CHECK_VARIABLE: 'stale'
+  WEBHOOK: ${{ secrets.GCHAT_WEBHOOK_URL}}
+
 
 jobs:
   Stale-PR:

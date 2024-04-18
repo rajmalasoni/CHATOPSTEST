@@ -68,11 +68,9 @@ try:
         msg["edited"] = f"Pull Request Edited by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}"
         msg["closed"] = f"Pull Request Closed by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}"
         msg["reopened"] = f"Pull Request Reopened by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}"
-        #msg["slash"]=f"Pull Request created on PR:\nTitle: {pr.title}\nURL: {pr.html_url} is now Closed"
+        
 
-    print("repo:",repo)
-    print("pulls:",pulls)
-    print("Hello")
+  
     # 1.Add "Stale" label to the PR if no active from 15 days
     now = datetime.now()
     if  EVENT_CHECK =='stale' :
@@ -151,7 +149,7 @@ try:
                 GCHAT_MESSAGE.append(msg.get("label"))
     
     if EVENT_CHECK =='slash':
-        print("print form issue block")
+        
     # 7_1 Check if the Approved comment in the pull request comments
         if MERGE_PR.__eq__('true'):
             if pr:    
