@@ -1,4 +1,5 @@
-name: 'PR Description and Target Checker'
+name: PR Description ,Target Checker ,Version and Close the PR having DO NOT MERGE LABEL
+#Description: This workflow triggers on the Pull and  check for  PR Description ,Target Checker ,Version and Close the PR having DO NOT MERGE LABEL
 on:
   pull_request:
     types: [opened, edited, reopened,labeled]
@@ -6,7 +7,7 @@ on:
 permissions: write-all    
       
 env:
-  MY_VARIABLE: 'pull'
+  EVENT_CHECK_VARIABLE: 'pull'
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   REPO_NAME: ${{ github.repository }}
   PR_NUMBER: ${{ github.event.pull_request.number }}

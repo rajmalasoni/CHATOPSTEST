@@ -10,7 +10,7 @@ try:
     repo_name=os.environ['REPO_NAME']
     #print("repo_name ={repo_name}")
     pulls = repo.get_pulls(state='open')
-
+    SEND_MESSAGE=[]
     pr_number = int(os.environ['PR_NUMBER']) if ( os.environ['PR_NUMBER'] ) else None
     pr = repo.get_pull(pr_number) if(pr_number) else None    
 
@@ -21,7 +21,7 @@ try:
     EVENT = os.environ['EVENT']
     GCHAT_WEBHOOK_URL = os.environ['WEBHOOK']
     print(f"print gchat token {GCHAT_WEBHOOK_URL}")
-    EVENT_CHECK=os.environ['MY_VARIABLE']
+    EVENT_CHECK=os.environ['EVENT_CHECK_VARIABLE']
     def send_message_to_google_chat(message, webhook_url):
         payload = {"text": message}
         response = requests.post(webhook_url, json=payload)

@@ -4,7 +4,7 @@ inputs:
   GITHUB_TOKEN:
     description: "Token used to access repo"
     required: false
-   MY_VARIABLE:
+   EVENT_CHECK_VARIABLE:
     description: "Token used to access repo"
     required: false
 runs:

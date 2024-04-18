@@ -5,7 +5,7 @@ on:
 permissions: write-all
   
 env:
-  MY_VARIABLE: 'slash'
+  EVENT_CHECK_VARIABLE: 'slash'
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   PR_NUMBER: ${{ github.event.issue.number }} 
   REPO_NAME: ${{ github.repository }}
