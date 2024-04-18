@@ -9,7 +9,7 @@ BASE_WORKFLOWS_DIR="$BASE_REPO_PATH/.github/workflows"
 echo " heelo from scriptcopy.sh"
 
 # Loop through each repository directory
-for repo_dir in /path/to/your/repos/*; do
+for repo_dir in /home/runner/work/*; do
     echo " heelo from scriptcopy.sh -repo"
     echo $repo_dir
     # Check if the repository directory exists and is a directory
