@@ -8,7 +8,7 @@ permissions: write-all
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
   REPO_NAME: ${{ github.repository }}
-  MY_VARIABLE: 'stale'
+  EVENT_CHECK_VARIABLE: 'stale'
 
 jobs:
   Stale-PR:

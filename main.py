@@ -10,7 +10,7 @@ try:
     repo_name=os.environ['REPO_NAME']
     #print("repo_name ={repo_name}")
     pulls = repo.get_pulls(state='open')
-
+    GCHAT_MESSAGE=[]
     pr_number = int(os.environ['PR_NUMBER']) if ( os.environ['PR_NUMBER'] ) else None
     pr = repo.get_pull(pr_number) if(pr_number) else None    
 
@@ -21,7 +21,9 @@ try:
     EVENT = os.environ['EVENT']
     GCHAT_WEBHOOK_URL = os.environ['WEBHOOK']
     print(f"print gchat token {GCHAT_WEBHOOK_URL}")
-    EVENT_CHECK=os.environ['MY_VARIABLE']
+    EVENT_CHECK=os.environ['EVENT_CHECK_VARIABLE']
+    
+    # Fuction to send the message to GCHAT
     def send_message_to_google_chat(message, webhook_url):
         payload = {"text": message}
         response = requests.post(webhook_url, json=payload)
@@ -74,7 +76,6 @@ try:
     # 1.Add "Stale" label to the PR if no active from 15 days
     now = datetime.now()
     if  EVENT_CHECK =='stale' :
-        print(" print from stale")
         for pull in pulls:
             time_diff = now - pull.updated_at
             # 1. Check if the time difference is greater than the stale_days
@@ -82,7 +83,9 @@ try:
                 print(f"Pull request: {pull.number} is stale!")
                 pull.create_issue_comment( msg.get("stale_label") )
                 pull.add_to_labels('Stale')
+                GCHAT_MESSAGE.append(msg.get("stale_label"))
 
+                
         # 2. Close staled PR if 2 days of no activity
             if "Stale" in [label.name for label in pull.labels]:
             # check if the time difference is greater than the stale_close_days
@@ -91,6 +94,7 @@ try:
                     print(msg.get("staled_PR_closing"))
                     pull.edit(state="closed")
                     pull.create_issue_comment(msg.get("staled_PR_closing") )
+                    GCHAT_MESSAGE.append(msg.get("staled_PR_closing"))
     
     if EVENT_CHECK =='pull':
         print(" print from pull")
@@ -101,6 +105,7 @@ try:
                 print(msg.get("check_PR_target"))
                 pull.edit(state='closed')
                 pull.create_issue_comment(msg.get("check_PR_target") )
+                GCHAT_MESSAGE.append(msg.get("check_PR_target"))
 
         # 4.Check if the pull request has a description
             if not pull.body:
@@ -108,6 +113,7 @@ try:
                 pull.edit(state='closed')
                 pull.create_issue_comment(msg.get("check_description"))
                 print(msg.get("check_description"))
+                GCHAT_MESSAGE.append(msg.get("check_description"))
     # 5. Check if version name from "VERSION" already exists as tag   
         if pr and VERSION_FILE:    
             print(f"version from VERSION_FILE : {VERSION_FILE}")
@@ -124,10 +130,12 @@ try:
                 pr.create_issue_comment(msg.get("tagcheck_reject") )
                 print(msg.get("tagcheck_reject") )
                 pr.edit(state='closed')
+                GCHAT_MESSAGE.append(msg.get("tagcheck_reject"))
         else:
             pr.create_issue_comment(msg.get("version_file_inexistence") )
             print(msg.get("version_file_inexistence"))
             pr.edit(state='closed')
+            GCHAT_MESSAGE.append(msg.get("version_file_inexistence"))
 
     # 6. Do not merge PR message and close the PR
         if pr:
@@ -139,7 +147,8 @@ try:
             if "DO NOT MERGE" in [label.name for label in labels]:
                 pr.edit(state='closed')
                 pr.create_issue_comment(msg.get("label"))
-                print(msg.get("label"))        
+                print(msg.get("label"))     
+                GCHAT_MESSAGE.append(msg.get("label"))
     
     if EVENT_CHECK =='slash':
         print("print form issue block")
@@ -149,6 +158,8 @@ try:
                 pr.merge(merge_method = 'merge', commit_message = msg.get("approve_merge"))
                 pr.create_issue_comment(msg.get("approve_comment"))
                 print(msg.get("approve_comment"))
+                GCHAT_MESSAGE.append(msg.get("approve_comment"))
+    
 
     # 7_2 Check if the Close comment in the pull request comments
         if CLOSE_PR.__eq__('true'):
@@ -156,14 +167,19 @@ try:
                 pr.edit(state="closed")
                 pr.create_issue_comment(msg.get("closing_comment"))
                 print(msg.get("closing_comment"))
+                GCHAT_MESSAGE.append(msg.get("closing_comment"))
 
     # 8. Google chat integration with github
     # print(f"event vale ={EVENT}")
     # print(f"GCHAT_WEBHOOK_URL: ={GCHAT_WEBHOOK_URL:}")
     #
+    print(f"print the value of event: {EVENT}")
     if EVENT and GCHAT_WEBHOOK_URL:
         message = msg.get("default")
         message = msg.get(EVENT, message)
+        for n in GCHAT_MESSAGE:
+            message =message +'\nIssue comment : ' + n
+            
         response = send_message_to_google_chat(message, GCHAT_WEBHOOK_URL)
         print(response.text) 
 
