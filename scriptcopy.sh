@@ -7,11 +7,13 @@ BASE_REPO_PATH="/home/runner/work/CHATOPSTEST/CHATOPSTEST"
 BASE_WORKFLOWS_DIR="$BASE_REPO_PATH/.github/workflows"
 
 echo " heelo from scriptcopy.sh"
-
+cd /home/runner/work/
+ls 
 # Loop through each repository directory
 for repo_dir in /home/runner/work/*; do
     echo " heelo from scriptcopy.sh -repo"
     echo $repo_dir
+    
     # Check if the repository directory exists and is a directory
     if [ -d "$repo_dir" ]; then
         # Create the .github/workflows directory if it doesn't exist
