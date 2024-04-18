@@ -92,7 +92,7 @@ try:
                     pull.edit(state="closed")
                     pull.create_issue_comment(msg.get("staled_PR_closing") )
     if EVENT_CHECK =='pull':
-        print(" print from stale")
+        print(" print from pull")
         for pull in pulls:
             # 3.Check if the pull request targets the master branch directly
             if pull.base.ref == 'master' and not pull.head.ref.startswith('release/'):
