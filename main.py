@@ -173,6 +173,7 @@ try:
     # print(f"event vale ={EVENT}")
     # print(f"GCHAT_WEBHOOK_URL: ={GCHAT_WEBHOOK_URL:}")
     #
+    print(f"print the value of event: {EVENT}")
     if EVENT and GCHAT_WEBHOOK_URL:
         message = msg.get("default")
         message = msg.get(EVENT, message)
