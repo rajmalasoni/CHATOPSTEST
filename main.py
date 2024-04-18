@@ -91,6 +91,7 @@ try:
                     print(msg.get("staled_PR_closing"))
                     pull.edit(state="closed")
                     pull.create_issue_comment(msg.get("staled_PR_closing") )
+    
     if EVENT_CHECK =='pull':
         print(" print from pull")
         for pull in pulls:
@@ -139,7 +140,8 @@ try:
                 pr.edit(state='closed')
                 pr.create_issue_comment(msg.get("label"))
                 print(msg.get("label"))        
-    if EVENT_CHECK =='issue':
+    
+    if EVENT_CHECK =='slash':
         print("print form issue block")
     # 7_1 Check if the Approved comment in the pull request comments
         if MERGE_PR.__eq__('true'):
