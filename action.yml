@@ -46,7 +46,7 @@ inputs:
   webhook:
     description: webhook URL
     required: false
-  MY_VARIABLE: 
+  EVENT_CHECK_VARIABLE: 
     description: MY Variable
     required: false
 runs:
@@ -65,4 +65,4 @@ runs:
     VERSION_FILE: ${{ inputs.version_file }}
     EVENT: ${{ inputs.event }}
     WEBHOOK: ${{ inputs.webhook }}
-    MY_VARIABLE: ${{input.MY_VARIABLE}}
+    EVENT_CHECK_VARIABLE: ${{ inputs.EVENT_CHECK_VARIABLE }}

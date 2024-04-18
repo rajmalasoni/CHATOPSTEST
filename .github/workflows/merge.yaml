@@ -5,12 +5,14 @@ on:
 permissions: write-all
   
 env:
-  MY_VARIABLE: 'issue'
+  EVENT_CHECK_VARIABLE: 'slash'
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   PR_NUMBER: ${{ github.event.issue.number }} 
   REPO_NAME: ${{ github.repository }}
   MERGE_PR: ${{ github.event.comment.body == '/Approved' }}
   CLOSE_PR: ${{ github.event.comment.body == '/Close' }}
+  WEBHOOK: ${{ secrets.GCHAT_WEBHOOK_URL}}
+  EVENT: ${{ github.event.action }} 
   
 jobs:
   Merge_and_Close-PR:  

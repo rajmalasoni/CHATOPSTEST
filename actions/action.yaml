@@ -4,6 +4,9 @@ inputs:
   GITHUB_TOKEN:
     description: "Token used to access repo"
     required: false
+   EVENT_CHECK_VARIABLE:
+    description: "Token used to access repo"
+    required: false
 runs:
   using: "composite"
   steps:
