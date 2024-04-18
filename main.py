@@ -68,7 +68,7 @@ try:
         msg["edited"] = f"Pull Request Edited by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}"
         msg["closed"] = f"Pull Request Closed by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}"
         msg["reopened"] = f"Pull Request Reopened by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}"
-
+        #msg["slash"]=f"Pull Request created on PR:\nTitle: {pr.title}\nURL: {pr.html_url} is now Closed"
 
     print("repo:",repo)
     print("pulls:",pulls)
