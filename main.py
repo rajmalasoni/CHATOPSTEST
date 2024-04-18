@@ -108,20 +108,7 @@ try:
                 pull.create_issue_comment(msg.get("check_description"))
                 print(msg.get("check_description"))
 
-    # 5_1 Check if the Approved comment in the pull request comments
-        if MERGE_PR.__eq__('true'):
-            if pr:    
-                pr.merge(merge_method = 'merge', commit_message = msg.get("approve_merge"))
-                pr.create_issue_comment(msg.get("approve_comment"))
-                print(msg.get("approve_comment"))
-
-    # 5_2 Check if the Close comment in the pull request comments
-        if CLOSE_PR.__eq__('true'):
-            if pr:            
-                pr.edit(state="closed")
-                pr.create_issue_comment(msg.get("closing_comment"))
-                print(msg.get("closing_comment"))
-
+    
     # 6. Check All the files and see if there is a file named "VERSION"
     # if VERSION_FILE :        
     #     files = pr.get_files()
@@ -171,6 +158,21 @@ try:
                 pr.edit(state='closed')
                 pr.create_issue_comment(msg.get("label"))
                 print(msg.get("label"))        
+    if EVENT_CHECK =='issue':
+        print("print form issue block")
+    # 5_1 Check if the Approved comment in the pull request comments
+        if MERGE_PR.__eq__('true'):
+            if pr:    
+                pr.merge(merge_method = 'merge', commit_message = msg.get("approve_merge"))
+                pr.create_issue_comment(msg.get("approve_comment"))
+                print(msg.get("approve_comment"))
+
+    # 5_2 Check if the Close comment in the pull request comments
+        if CLOSE_PR.__eq__('true'):
+            if pr:            
+                pr.edit(state="closed")
+                pr.create_issue_comment(msg.get("closing_comment"))
+                print(msg.get("closing_comment"))
 
     # 9. Google chat integration with github
     # print(f"event vale ={EVENT}")
