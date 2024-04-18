@@ -10,10 +10,12 @@ echo " heelo from scriptcopy.sh"
 
 # Loop through each repository directory
 for repo_dir in /path/to/your/repos/*; do
+    echo " heelo from scriptcopy.sh -repo"
     # Check if the repository directory exists and is a directory
     if [ -d "$repo_dir" ]; then
         # Create the .github/workflows directory if it doesn't exist
         mkdir -p "$repo_dir/.github/workflows"
+        echo " heelo from scriptcopy.sh -repodir"
 
         # Loop through each shared workflow file in the base repository
         for workflow_file in "$BASE_WORKFLOWS_DIR"/*; do
