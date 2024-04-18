@@ -94,7 +94,7 @@ try:
     if EVENT_CHECK =='pull':
         print(" print from pull")
         for pull in pulls:
-            # 3.Check if the pull request targets the master branch directly
+        # 3.Check if the pull request targets the master branch directly
             if pull.base.ref == 'master' and not pull.head.ref.startswith('release/'):
                 print(f"Pull request: {pull.number} was targeted to master")
                 print(msg.get("check_PR_target"))
@@ -107,26 +107,7 @@ try:
                 pull.edit(state='closed')
                 pull.create_issue_comment(msg.get("check_description"))
                 print(msg.get("check_description"))
-
-    
-    # 6. Check All the files and see if there is a file named "VERSION"
-    # if VERSION_FILE :        
-    #     files = pr.get_files()
-    #     print(files)
-    #     version_file_exist = False
-    #     for file in files:
-    #         if file.filename == 'VERSION':
-    #             print(f"file : {file}")
-    #             version_file_exist = True
-    #             break
-    #     if version_file_exist:
-    #         print(msg.get("check_version_file") )
-    #     else:
-    #         pr.create_issue_comment(msg.get("version_file_inexistence") )
-    #         print(msg.get("version_file_inexistence"))
-    #         pr.edit(state='closed')
-
-    # 7. Check if version name from "VERSION" already exists as tag   
+    # 5. Check if version name from "VERSION" already exists as tag   
         if pr and VERSION_FILE:    
             print(f"version from VERSION_FILE : {VERSION_FILE}")
             tags = repo.get_tags()
@@ -147,7 +128,7 @@ try:
             print(msg.get("version_file_inexistence"))
             pr.edit(state='closed')
 
-    # 8. Do not merge PR message and close the PR
+    # 6. Do not merge PR message and close the PR
         if pr:
             labels = pr.get_labels()
             print(pr)
@@ -160,21 +141,21 @@ try:
                 print(msg.get("label"))        
     if EVENT_CHECK =='issue':
         print("print form issue block")
-    # 5_1 Check if the Approved comment in the pull request comments
+    # 7_1 Check if the Approved comment in the pull request comments
         if MERGE_PR.__eq__('true'):
             if pr:    
                 pr.merge(merge_method = 'merge', commit_message = msg.get("approve_merge"))
                 pr.create_issue_comment(msg.get("approve_comment"))
                 print(msg.get("approve_comment"))
 
-    # 5_2 Check if the Close comment in the pull request comments
+    # 7_2 Check if the Close comment in the pull request comments
         if CLOSE_PR.__eq__('true'):
             if pr:            
                 pr.edit(state="closed")
                 pr.create_issue_comment(msg.get("closing_comment"))
                 print(msg.get("closing_comment"))
 
-    # 9. Google chat integration with github
+    # 8. Google chat integration with github
     # print(f"event vale ={EVENT}")
     # print(f"GCHAT_WEBHOOK_URL: ={GCHAT_WEBHOOK_URL:}")
     #
