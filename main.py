@@ -178,6 +178,7 @@ try:
         message = msg.get(EVENT, message)
         for n in GCHAT_MESSAGE:
             message +=n
+            message='\n'
         response = send_message_to_google_chat(message, GCHAT_WEBHOOK_URL)
         print(response.text) 
 
