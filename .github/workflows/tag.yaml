@@ -34,5 +34,7 @@ jobs:
         if: ${{ env.CREATE_TAG }}
       
       - name: Push tag
-        run: git push origin $VERSION
+        run: git push origin $VERSION --tags
         if: ${{ env.CREATE_TAG }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
