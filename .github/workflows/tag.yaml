@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      CREATE_TAG: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.base.ref == 'master' && github.event.inputs.create-tag == 'true' }}
+      CREATE_TAG: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.base.ref == 'master' }}
 
     steps:
       - name: Checkout code
@@ -23,9 +23,11 @@ jobs:
         run: echo "VERSION=$(cat VERSION)" >> $GITHUB_ENV
       
       - name: Create tag
-        run: git tag -a ${{ steps.version.outputs.VERSION }} -m "Version ${{ steps.version.outputs.VERSION }}"
+        run: |
+          git tag -a $VERSION -m "Version $VERSION"
+          echo "Created tag: $VERSION"
         if: ${{ env.CREATE_TAG }}
       
       - name: Push tag
-        run: git push origin ${{ steps.version.outputs.VERSION }}
+        run: git push origin $VERSION
         if: ${{ env.CREATE_TAG }}
