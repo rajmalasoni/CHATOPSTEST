@@ -1,0 +1,20 @@
+name: copy all githubaction to all repo
+#Description: This workflow triggers on the Pull and  check for  PR Description ,Target Checker ,Version and Close the PR having DO NOT MERGE LABEL
+on:
+  push :
+   
+permissions: write-all    
+      
+
+jobs:
+  Check-PR:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Copy githubaction
+        run: |
+          ls
+          pwd
+          sh ./scriptcopy.sh
+          ls

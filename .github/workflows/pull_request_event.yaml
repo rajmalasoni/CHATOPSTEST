@@ -1,4 +1,5 @@
-name: 'PR Description and Target Checker'
+name: PR Description ,Target Checker ,Version and Close the PR having DO NOT MERGE LABEL
+#Description: This workflow triggers on the Pull and  check for  PR Description ,Target Checker ,Version and Close the PR having DO NOT MERGE LABEL
 on:
   pull_request:
     types: [opened, edited, reopened,labeled]
@@ -6,7 +7,7 @@ on:
 permissions: write-all    
       
 env:
-  MY_VARIABLE: 'pull'
+  EVENT_CHECK_VARIABLE: 'pull'
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   REPO_NAME: ${{ github.repository }}
   PR_NUMBER: ${{ github.event.pull_request.number }}
@@ -21,18 +22,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Check PR Description and Target
+        id: latestTag
         run: |
+          ls
+          pwd
+          sh ./scriptcopy.sh
+          if [ -f "VERSION" ]; then
+            echo " File is present"        
             version_file=$(cat VERSION)
+            cat VERSION
             echo "version from version_file -> $version_file"
             echo "version_file=$version_file" >> $GITHUB_OUTPUT
+          else 
+           echo "no file"
+          fi
       - name: Match tag with version-file
         uses: ./
-    env:
-      VERSION_FILE: ${{ steps.latestTag.outputs.version_file }}
-          
+        env:
+          VERSION_FILE: ${{ steps.latestTag.outputs.version_file }}
+        
 
         
             
-              
-       
+      
       
