@@ -20,7 +20,13 @@ try:
     EVENT = os.environ['EVENT']
     GCHAT_WEBHOOK_URL = os.environ['WEBHOOK']
     EVENT_CHECK=os.environ['EVENT_CHECK_VARIABLE']
-    
+     
+     # Fuction to send the message to GCHAT
+    def send_message_to_google_chat(message, webhook_url):
+        payload = {"text": message}
+        response = requests.post(webhook_url, json=payload)
+        return response
+
     # Define messages for Google Chat and comment body in Github
     msg = {
         "stale_label": 'This PR is stale because it has been open 15 days with no activity. Remove stale label or comment/update PR otherwise this will be closed in next 2 days.',
