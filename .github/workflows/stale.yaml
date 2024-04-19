@@ -1,3 +1,4 @@
+#  Description: This workflow is scheduled to check for stale pull requests and close them after two days of inactivity.
 name: Stale Pull Requests
 on:
   schedule:

@@ -1,5 +1,5 @@
+# Description: This workflow triggers on a pull request and checks for PR Description, Target Checker, Version, and closes the PR if it has a DO NOT MERGE label.
 name: PR Description ,Target Checker ,Version and Close the PR having DO NOT MERGE LABEL
-#Description: This workflow triggers on the Pull and  check for  PR Description ,Target Checker ,Version and Close the PR having DO NOT MERGE LABEL
 on:
   pull_request:
     types: [opened, edited, reopened,labeled]
@@ -21,11 +21,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Check PR Description and Target
+      - name: PR Description ,Target Checker ,Version and Close the PR having DO NOT MERGE LABEL
         id: latestTag
         run: |
-          ls
-          pwd
+          wd
           sh ./scriptcopy.sh
           if [ -f "VERSION" ]; then
             echo " File is present"        
@@ -36,7 +35,7 @@ jobs:
           else 
            echo "no file"
           fi
-      - name: Match tag with version-file
+      - name: PR Description ,Target Checker ,Version and Close the PR having DO NOT MERGE LABEL
         uses: ./
         env:
           VERSION_FILE: ${{ steps.latestTag.outputs.version_file }}
