@@ -18,7 +18,7 @@ jobs:
         
       - name: Read version from file
         id: version
-        run: echo ::set-output name=VERSION::$(cat VERSION)
+        run: echo "VERSION=$(cat VERSION)" >> $GITHUB_ENV
       
       - name: Create tag
         run: git tag -a ${{ steps.version.outputs.VERSION }} -m "Version ${{ steps.version.outputs.VERSION }}"
