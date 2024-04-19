@@ -6,6 +6,10 @@ on:
     types: [closed]
     branches:
       - master
+permissions:
+  pull-requests: write
+  issues: write
+  repository-projects: write
 
 jobs:
   create-tag:
