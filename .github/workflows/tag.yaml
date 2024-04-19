@@ -1,3 +1,4 @@
+#  Description: This workflow is tigger on close event   to check for stale pull requests and close them after two days of inactivity.
 name: Create Tag on Merge to master
 
 on:
@@ -19,4 +20,4 @@ jobs:
         uses: imp-ress-ico/github-actions/actions@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          EVENT_CHECK_VARIABLE: 'close'
+         
