@@ -7,11 +7,15 @@ on:
     branches:
       - master
 
-
 jobs:
   create-tag:
     runs-on: ubuntu-latest
-    
+
+    inputs:
+      create-tag: # Input parameter to control tag creation
+        description: 'Whether to create and push the tag'
+        default: 'false' # Default to false
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -22,8 +26,8 @@ jobs:
       
       - name: Create tag
         run: git tag -a ${{ steps.version.outputs.VERSION }} -m "Version ${{ steps.version.outputs.VERSION }}"
-        if: github.event_name == 'issues' && github.event.action == 'closed' && github.ref == 'refs/heads/master'
+        if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.base.ref == 'master' && inputs.create-tag == 'true' }}
       
       - name: Push tag
         run: git push origin ${{ steps.version.outputs.VERSION }}
-        if: github.event_name == 'issues' && github.event.action == 'closed' && github.ref == 'refs/heads/master'
+        if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.base.ref == 'master' && inputs.create-tag == 'true' }}
