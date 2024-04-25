@@ -56,6 +56,7 @@ try:
     # Get current datetime
     now = datetime.now()
     print(f"hello from stale{now}")
+    print(f"the value of event={EVENT}")
     # Check events based on the workflow type
     if  EVENT_CHECK =='stale' :
         print("hello from stale")
@@ -66,7 +67,7 @@ try:
                 pull.create_issue_comment(msg.get("stale_label"))
                 pull.add_to_labels('Stale')
                 GCHAT_MESSAGE.append(msg.get("stale_label"))
-        
+               
         # 2. Close stalled PR if no activity for 2 days
         for pull in pulls:
             if "Stale" in [label.name for label in pull.labels]:
