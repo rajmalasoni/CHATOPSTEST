@@ -1,12 +1,14 @@
+#  Description: This workflow is scheduled to check for stale pull requests and close them after two days of inactivity.
 name: Stale Pull Requests
 on:
-  schedule:
-    - cron: '0 09 * * *' # scheduler runs every day at 9:00am UTC
-
+  push:
+  #schedule:
+   # - cron: '41 20 * * *' # scheduler runs every day at 9:00am UTC
 permissions: write-all
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+  EVENT: ${{ github.event.action }}
   REPO_NAME: ${{ github.repository }}
   EVENT_CHECK_VARIABLE: 'stale'
   WEBHOOK: ${{ secrets.GCHAT_WEBHOOK_URL}}

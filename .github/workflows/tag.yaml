@@ -1,3 +1,4 @@
+#  Description: This workflow is tigger on close event   to check for stale pull requests and close them after two days of inactivity.
 name: Create Tag on Merge to master
 
 on:
@@ -10,13 +11,31 @@ on:
 jobs:
   create-tag:
     runs-on: ubuntu-latest
-    
-    steps: 
+
+    env:
+      CREATE_TAG: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.base.ref == 'master' }}
+
+    steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
+      - name: Set up Git
+        run: |
+          git config --global user.email "actions@example.com"
+          git config --global user.name "GitHub Actions"
+
+      - name: Read version from file
+        id: version
+        run: echo "VERSION=$(cat VERSION)" >> $GITHUB_ENV
+      
       - name: Create tag
-        uses: imp-ress-ico/github-actions/actions@master
+        run: |
+          git tag -a $VERSION -m "Version $VERSION"
+          echo "Created tag: $VERSION"
+        if: ${{ env.CREATE_TAG }}
+      
+      - name: Push tag
+        run: git push origin $VERSION --tags
+        if: ${{ env.CREATE_TAG }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          EVENT_CHECK_VARIABLE: 'close'
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

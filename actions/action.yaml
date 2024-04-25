@@ -1,13 +1,11 @@
+# Description: Composite action for creating and pushing a tag to the repository.
 name: "Main action file to create tag"
 description: "composite actions"
 inputs:
   GITHUB_TOKEN:
     description: "Token used to access repo"
     required: false
-   EVENT_CHECK_VARIABLE:
-    description: "Token used to access repo"
-    required: false
-runs:
+   runs:
   using: "composite"
   steps:
     - run: git tag $(cat VERSION)
