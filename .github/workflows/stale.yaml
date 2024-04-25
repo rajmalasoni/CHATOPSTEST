@@ -1,8 +1,9 @@
 #  Description: This workflow is scheduled to check for stale pull requests and close them after two days of inactivity.
 name: Stale Pull Requests
 on:
-  schedule:
-    - cron: '41 20 * * *' # scheduler runs every day at 9:00am UTC
+  push:
+  #schedule:
+   # - cron: '41 20 * * *' # scheduler runs every day at 9:00am UTC
 permissions: write-all
 
 env:
