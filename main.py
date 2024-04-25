@@ -55,9 +55,10 @@ try:
         
     # Get current datetime
     now = datetime.now()
-    
+    print(f"hello from stale{now}")
     # Check events based on the workflow type
     if  EVENT_CHECK =='stale' :
+        print("hello from stale")
         # 1. Add "Stale" label to the PR if no activity for 15 days
         for pull in pulls:
             time_diff = now - pull.updated_at
