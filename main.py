@@ -72,12 +72,14 @@ try:
         for pull in pulls:
             print(f"hello from stale label:- {pull}")
             if "Stale" in [label.name for label in pull.labels]:
-                print(f"hello from  label:-")
+                print("Stale label is present")
                 if time_diff > timedelta(days=msg.get("stale_close_days")):
                     print(f"hello from  time-diff:- {time_diff}")
                     pull.edit(state="closed")
                     pull.create_issue_comment(msg.get("staled_PR_closing"))
                     GCHAT_MESSAGE.append(msg.get("staled_PR_closing"))
+            else:
+                 print("Stale label is not present")
                     
     if EVENT_CHECK =='pull':
         # 3. Check if the PR targets the master branch directly
