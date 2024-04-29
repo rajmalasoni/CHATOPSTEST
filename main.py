@@ -71,7 +71,7 @@ try:
         # 2. Close stalled PR if no activity for 2 days
         for pull in pulls:
             print(f"hello from stale label:- {pull}")
-            if "Stale" in [label.name for label in pull.labels]:
+            if "stale" in [label.name for label in pull.labels]:
                 if time_diff > timedelta(days=msg.get("stale_close_days")):
                     pull.edit(state="closed")
                     pull.create_issue_comment(msg.get("staled_PR_closing"))
