@@ -64,9 +64,8 @@ try:
         # 1. Add "Stale" label to the PR if no activity for 15 days
         for pull in pulls:
             time_diff = now - pull.updated_at
-            print(f"pull update at = {pull.updated_at}")
-            print(f"time_diff= {time_diff}")
-            if time_diff > timedelta(days=msg.get("stale_days")):
+            stale_label_present = any(label.name == "Stale" for label in pull.labels)
+            if time_diff > timedelta(days=msg.get("stale_days"))and not stale_label_present:
                 pull.create_issue_comment(msg.get("stale_label"))
                 pull.add_to_labels('Stale')
                 GCHAT_MESSAGE.append("The pr number:"+str(pull.number))
