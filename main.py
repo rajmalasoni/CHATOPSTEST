@@ -67,7 +67,7 @@ try:
             if time_diff > timedelta(days=msg.get("stale_days"))and not stale_label_present:
                 pull.create_issue_comment(msg.get("stale_label"))
                 pull.add_to_labels('Stale')
-                #GCHAT_MESSAGE.append("The pr number:"+str(pull.number))
+                GCHAT_MESSAGE.append(msg.get("default"))
                 GCHAT_MESSAGE.append("The pr number:"+ str(pull.number)+" " +msg.get("stale_label")+msg.get("default"))
                 print(GCHAT_MESSAGE)
                
@@ -80,8 +80,8 @@ try:
                     print(f"hello from  time-diff:- {time_diff}")
                     pull.edit(state="closed")
                     pull.create_issue_comment(msg.get("staled_PR_closing"))
-                    #GCHAT_MESSAGE.append("The pr number:"+ str(pull.number))
-                    GCHAT_MESSAGE.append("The pr number:"+ str(pull.number)+ " "+msg.get("staled_PR_closing")+ msg.get("default"))
+                    GCHAT_MESSAGE.append(msg.get("default"))
+                    GCHAT_MESSAGE.append("The pr number:"+ str(pull.number)+ " "+msg.get("staled_PR_closing"))
             else:
                  print("Stale label is not present")
                     
