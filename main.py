@@ -147,6 +147,8 @@ try:
         message = msg.get(EVENT, message)
         for n in GCHAT_MESSAGE:
             message =message +'\nIssue comment : ' + n
+        
+        print("message from gchat= {message}")
         response = send_message_to_google_chat(message, GCHAT_WEBHOOK_URL)
 
 except Exception as e:
