@@ -68,7 +68,7 @@ try:
                 pull.create_issue_comment(msg.get("stale_label"))
                 pull.add_to_labels('Stale')
                 #GCHAT_MESSAGE.append("The pr number:"+str(pull.number))
-                GCHAT_MESSAGE.append("The pr number:"+ str(pull.number)+" " +msg.get("stale_label")+"\n"+ "URL: " + str(pr.html_url))
+                GCHAT_MESSAGE.append("The pr number:"+ str(pull.number)+" " +msg.get("stale_label")+msg.get("default"))
                 print(GCHAT_MESSAGE)
                
         # 2. Close stalled PR if no activity for 2 days
@@ -81,7 +81,7 @@ try:
                     pull.edit(state="closed")
                     pull.create_issue_comment(msg.get("staled_PR_closing"))
                     #GCHAT_MESSAGE.append("The pr number:"+ str(pull.number))
-                    GCHAT_MESSAGE.append("The pr number:"+ str(pull.number)+ " "+msg.get("staled_PR_closing")+"\n"+ "URL: " + str(pr.html_url))
+                    GCHAT_MESSAGE.append("The pr number:"+ str(pull.number)+ " "+msg.get("staled_PR_closing")+ msg.get("default"))
             else:
                  print("Stale label is not present")
                     
@@ -145,7 +145,6 @@ try:
     # 8. Google Chat integration with GitHub
     if EVENT_CHECK and GCHAT_WEBHOOK_URL:
         message = msg.get("default")
-        print("message after defualt: {message}")
         message = msg.get(EVENT, message)
         print("message after event: {message}")
         print(GCHAT_MESSAGE)
