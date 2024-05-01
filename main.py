@@ -55,7 +55,7 @@ try:
         
     # Get current datetime
     #now = datetime.now()
-    now=2024-05-04 
+    now="2024-05-04 "
     print(f"hello from stale{now}")
     print(f"the value of event={EVENT}")
     # Check events based on the workflow type
