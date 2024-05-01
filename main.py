@@ -74,7 +74,7 @@ try:
         # 2. Close stalled PR if no activity for 2 days
         for pull in pulls:
             print(f"hello from stale label:- {pull}")
-            if "Stale" ==pull.title:
+            if "Stale" in [label.name for label in pull.labels]:
                 print("Stale label is present")
                 if time_diff > timedelta(days=msg.get("stale_close_days")):
                     print(f"hello from  time-diff:- {time_diff}")
