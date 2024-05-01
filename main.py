@@ -148,7 +148,7 @@ try:
             message = msg.get("default")
             print("message after defualt: {message}")
             message = msg.get(EVENT, message)
-            print("message after event: {message}")
+            print("message after check event: {message}")
 
         for n in GCHAT_MESSAGE:
             message =message +'\nIssue comment : ' + n
