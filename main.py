@@ -152,8 +152,7 @@ try:
         print("message after event: {message}")
         print(GCHAT_MESSAGE)
         if EVENT_CHECK =='stale' :
-            for n in GCHAT_MESSAGE:
-                message +=str(n)
+            message ='\n'.join(GCHAT_MESSAGE)
         else :
             for n in GCHAT_MESSAGE:
                 message =message +'\nIssue comment : ' + n
