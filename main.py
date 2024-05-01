@@ -70,6 +70,7 @@ try:
                 pull.create_issue_comment(msg.get("stale_label"))
                 pull.add_to_labels('Stale')
                 GCHAT_MESSAGE.append(msg.get("stale_label"))
+                print(GCHAT_MESSAGE)
                
         # 2. Close stalled PR if no activity for 2 days
         for pull in pulls:
@@ -142,7 +143,7 @@ try:
                 GCHAT_MESSAGE.append(msg.get("closing_comment"))
 
     # 8. Google Chat integration with GitHub
-    if EVENT and GCHAT_WEBHOOK_URL:
+    if EVENT_CHECK and GCHAT_WEBHOOK_URL:
         message=' github message : '
         message = msg.get("default")
         print("message after defualt: {message}")
