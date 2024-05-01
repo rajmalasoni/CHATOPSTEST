@@ -63,6 +63,7 @@ try:
         # 1. Add "Stale" label to the PR if no activity for 15 days
         for pull in pulls:
             time_diff = now - pull.updated_at
+            print(f"pull update at = {pull.updated_at}")
             print(f"time_diff= {time_diff}")
             if time_diff > timedelta(days=msg.get("stale_days")):
                 pull.create_issue_comment(msg.get("stale_label"))
