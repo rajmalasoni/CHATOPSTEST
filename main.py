@@ -153,7 +153,7 @@ try:
         print(GCHAT_MESSAGE)
         if EVENT_CHECK =='stale' :
             for n in GCHAT_MESSAGE:
-                message +=n
+                message +=str(n)
         else :
             for n in GCHAT_MESSAGE:
                 message =message +'\nIssue comment : ' + n
