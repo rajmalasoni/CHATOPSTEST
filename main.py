@@ -54,7 +54,8 @@ try:
         msg["reopened"] = f"Pull Request Reopened by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}"
         
     # Get current datetime
-    now = datetime.now()
+    #now = datetime.now()
+    now=2024-05-04 16:52:57.373806
     print(f"hello from stale{now}")
     print(f"the value of event={EVENT}")
     # Check events based on the workflow type
