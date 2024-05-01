@@ -56,8 +56,7 @@ try:
     # Get current datetime
     now = datetime.now() + timedelta(days=5)
     
-    print(f"hello from stale{now}")
-    print(f"the value of event={EVENT}")
+    
     # Check events based on the workflow type
     if  EVENT_CHECK =='stale' :
         print("hello from stale")
