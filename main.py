@@ -81,6 +81,7 @@ try:
                     print(f"hello from  time-diff:- {time_diff}")
                     pull.edit(state="closed")
                     pull.create_issue_comment(msg.get("staled_PR_closing"))
+                    GCHAT_MESSAGE.append("The pr number:"+ pull.number)
                     GCHAT_MESSAGE.append(msg.get("staled_PR_closing"))
             else:
                  print("Stale label is not present")
