@@ -144,11 +144,12 @@ try:
 
     # 8. Google Chat integration with GitHub
     if EVENT_CHECK and GCHAT_WEBHOOK_URL:
-        message=' github message : '
-        message = msg.get("default")
-        print("message after defualt: {message}")
-        message = msg.get(EVENT, message)
-        print("message after event: {message}")
+        if EVENT_CHECK !='stale' :
+            message = msg.get("default")
+            print("message after defualt: {message}")
+            message = msg.get(EVENT, message)
+            print("message after event: {message}")
+
         for n in GCHAT_MESSAGE:
             message =message +'\nIssue comment : ' + n
         
