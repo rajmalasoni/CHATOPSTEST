@@ -69,6 +69,7 @@ try:
             if time_diff > timedelta(days=msg.get("stale_days")):
                 pull.create_issue_comment(msg.get("stale_label"))
                 pull.add_to_labels('Stale')
+                GCHAT_MESSAGE.append("The pr number:"+ pull.number)
                 GCHAT_MESSAGE.append(msg.get("stale_label"))
                 print(GCHAT_MESSAGE)
                
