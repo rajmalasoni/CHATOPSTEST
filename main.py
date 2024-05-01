@@ -59,7 +59,7 @@ try:
     
     # Check events based on the workflow type
     if  EVENT_CHECK =='stale' :
-        print("hello from stale")
+       
         # 1. Add "Stale" label to the PR if no activity for 15 days
         for pull in pulls:
             time_diff = now - pull.updated_at
@@ -70,7 +70,7 @@ try:
                 #GCHAT_MESSAGE.append(msg.get("default"))
                 GCHAT_MESSAGE.append("The pr number:"+ str(pull.number)+" " +msg.get("stale_label"))
                 GCHAT_MESSAGE.append("URL: " + pull.html_url) 
-                print(GCHAT_MESSAGE)
+               
                
         # 2. Close stalled PR if no activity for 2 days
         for pull in pulls:
@@ -147,8 +147,6 @@ try:
     if EVENT_CHECK and GCHAT_WEBHOOK_URL:
         message = msg.get("default")
         message = msg.get(EVENT, message)
-        print("message after event: {message}")
-        print(GCHAT_MESSAGE)
         if EVENT_CHECK =='stale' :
             message ='\n'.join(GCHAT_MESSAGE)
         else :
