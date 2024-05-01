@@ -68,7 +68,7 @@ try:
                 pull.create_issue_comment(msg.get("stale_label"))
                 pull.add_to_labels('Stale')
                 #GCHAT_MESSAGE.append("The pr number:"+str(pull.number))
-                GCHAT_MESSAGE.append("The pr number:"+ str(pull.number)+" " +msg.get("stale_label"))
+                GCHAT_MESSAGE.append("The pr number:"+ str(pull.number)+" " +msg.get("stale_label")+"\n"+ "URL: " + str(pr.html_url))
                 print(GCHAT_MESSAGE)
                
         # 2. Close stalled PR if no activity for 2 days
@@ -81,7 +81,7 @@ try:
                     pull.edit(state="closed")
                     pull.create_issue_comment(msg.get("staled_PR_closing"))
                     #GCHAT_MESSAGE.append("The pr number:"+ str(pull.number))
-                    GCHAT_MESSAGE.append("The pr number:"+ str(pull.number)+ " "+msg.get("staled_PR_closing"))
+                    GCHAT_MESSAGE.append("The pr number:"+ str(pull.number)+ " "+msg.get("staled_PR_closing")+"\n"+ "URL: " + str(pr.html_url))
             else:
                  print("Stale label is not present")
                     
