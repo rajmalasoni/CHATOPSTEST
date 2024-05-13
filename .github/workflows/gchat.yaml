@@ -22,3 +22,4 @@ jobs:
         with:
           EVENT_CHECK_VARIABLE: ${{ github.event.client_payload.EVENT_CHECK_VARIABLE }}
           PR_NUMBER: ${{ github.event.client_payload.PR_NUMBER }}
+          VERSION_FILE: ${{ github.event.client_payload.VERSION_FILE}}

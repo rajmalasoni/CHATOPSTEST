@@ -45,6 +45,7 @@ jobs:
                             {
                               "EVENT_CHECK_VARIABLE": "${{ env.EVENT_CHECK_VARIABLE }}",
                               "PR_NUMBER": "${{ env.PR_NUMBER }}"
+                               "VERSION_FILE": ${{ steps.latestTag.outputs.version_file }}
                             }
         
 
