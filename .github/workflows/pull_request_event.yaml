@@ -28,6 +28,7 @@ jobs:
         run: |
           ls -l pr_info.txt
           pwd 
+          du -sh pr_info.txt
 
       - name: Checkout
         uses: actions/checkout@v3
