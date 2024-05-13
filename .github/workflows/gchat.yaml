@@ -1,8 +1,10 @@
 name: check if notification is sent to gchat
 
 on:
-  issue_comment:
-    types: [created]
+  workflow_run:
+    workflows: ["merge.yaml", "pull_request_event.yaml", "stale.yaml"]
+    types:
+      - completed
 
 permissions: write-all
 
