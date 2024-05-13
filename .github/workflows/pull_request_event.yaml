@@ -15,29 +15,38 @@ env:
   
  
 jobs:
-  Check-PR:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Version Check
-        id: latestTag
-        run: |
-          if [ -f "VERSION" ]; then
-            echo " File is present"        
-            version_file=$(cat VERSION)
-            echo "version from version_file -> $version_file"
-            echo "version_file=$version_file" >> $GITHUB_OUTPUT
-          else 
-           echo "no file"
-          fi
-      - name: PR Description ,Target Checker ,Version and Close the PR having DO NOT MERGE LABEL
-        uses: ./
-        env:
-          VERSION_FILE: ${{ steps.latestTag.outputs.version_file }}
-        
-
-        
+    Check-PR:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Set PR Info
+          id: set_pr_info
+          run: |
+            echo "PR_NUMBER=${{ github.event.pull_request.number }}" >> pr_info.txt
+            echo "EVENT=${{ github.event.action }}" >> pr_info.txt
+            echo "EVENT_CHECK_VARIABLE= $EVENT_CHECK_VARIABLE " >> pr_info.txt 
+        - name: Checkout
+          uses: actions/checkout@v3
+        - name: Version Check
+          id: latestTag
+          run: |
+            if [ -f "VERSION" ]; then
+              echo "File is present"        
+              version_file=$(cat VERSION)
+              echo "Version from version_file -> $version_file"
+              echo "version_file=$version_file" >> $GITHUB_OUTPUT
+            else 
+             echo "No file"
+            fi
+        - name: PR Description, Target Checker, Version and Close the PR having DO NOT MERGE LABEL
+          uses: ./
+          env:
+            VERSION_FILE: ${{ steps.latestTag.outputs.version_file }}
+          
+        - name: Upload Artifact
+          uses: actions/upload-artifact@v2
+          with:
+            name: pr-info
+            path: pr_info.txt        
             
       
       
