@@ -5,7 +5,10 @@ on:
     workflows: ["PR Description, Target Checker, Version, and Close the PR having DO NOT MERGE LABEL"]
     types: [completed]
   
+  pull_request:
+    types: [opened, edited, reopened , closed]
   issue_comment:
+    
 
 permissions: write-all
 
