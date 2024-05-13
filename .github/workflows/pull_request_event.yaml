@@ -25,7 +25,9 @@ jobs:
       
       # Check if pr_info.txt exists
       - name: Check if pr_info.txt exists
-        run: ls -l pr_info.txt
+        run: |
+          ls -l pr_info.txt
+          pwd 
 
       - name: Checkout
         uses: actions/checkout@v3
