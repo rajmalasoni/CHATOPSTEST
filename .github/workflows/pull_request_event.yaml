@@ -23,11 +23,10 @@ jobs:
           echo "EVENT_CHECK_VARIABLE= $EVENT_CHECK_VARIABLE " >> pr_info.txt 
           cat pr_info.txt
       
-      # Troubleshooting Step 1: Check the contents of the pr_info.txt file
-      - name: Check pr_info.txt content
-        run: |
-          cat pr_info.txt
-          
+      # Check if pr_info.txt exists
+      - name: Check if pr_info.txt exists
+        run: ls -l pr_info.txt
+
       - name: Checkout
         uses: actions/checkout@v3
           
@@ -43,12 +42,7 @@ jobs:
             echo "No file"
           fi
       
-      # Troubleshooting Step 2: Check if the VERSION file exists and its content
-      - name: Check VERSION file
-        run: |
-          ls -l VERSION
-          cat VERSION || echo "VERSION file does not exist"
-      
+      # Assuming this is your custom action for PR Description, Target Checker, Version, and Closing PR with DO NOT MERGE label
       - name: PR Description, Target Checker, Version and Close the PR having DO NOT MERGE LABEL
         uses: ./ # Assuming this is your custom action
         env:
@@ -64,4 +58,4 @@ jobs:
       # Add this step to debug the uploaded artifact size
       - name: Debug Uploaded Artifact
         run: |
-          echo "Uploaded artifact size: $(du -sh ${{ github.workspace }}/pr_info.txt)"
+          echo "Uploaded artifact size: $(du -sh ${{ steps.upload_artifact.outputs.artifact_path }})"
