@@ -6,22 +6,21 @@ on:
     types: [completed]
 
 
-jobs:
-  trigger_workflow:
-    runs-on: ubuntu-latest
+permissions: write-all
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  REPO_NAME: ${{ github.repository }}
+  PR_NUMBER: ${{ github.event.pull_request.number }}
+  EVENT: ${{ github.event.action }} 
+  WEBHOOK: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
     
+     
+jobs:
+  Google-Chat-Integration:
+    runs-on: ubuntu-latest
     steps:
-      - name: Check if comment was made by GitHub Actions bot
-        id: bot_comment_check
-        run: |
-          if [ "${{ github.event.comment.user.login }}" == "github-actions[bot]" ]; then
-            echo "::set-output name=bot_comment::true"
-          else
-            echo "::set-output name=bot_comment::false"
-          fi
-      
-      - name: Trigger Workflow
-        if: steps.bot_comment_check.outputs.bot_comment == 'true'
-        run: echo "Triggered by GitHub Actions bot comment"
-        # Add your workflow steps here
-        # Add your workflow steps here
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Google Chat Integration
+        uses: ./
