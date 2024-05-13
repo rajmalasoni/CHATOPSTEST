@@ -2,9 +2,8 @@ name: check if notification is sent to gchat
 
 on:
   workflow_run:
-    workflows: ["merge.yaml", "pull_request_event.yaml", "stale.yaml"]
-    types:
-      - completed
+    workflows: ["PR Description, Target Checker, Version, and Close the PR having DO NOT MERGE LABEL"]
+    types: [completed]
   
   issue_comment:
 
