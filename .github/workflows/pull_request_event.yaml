@@ -24,6 +24,7 @@ jobs:
             echo "PR_NUMBER=${{ github.event.pull_request.number }}" >> pr_info.txt
             echo "EVENT=${{ github.event.action }}" >> pr_info.txt
             echo "EVENT_CHECK_VARIABLE= $EVENT_CHECK_VARIABLE " >> pr_info.txt 
+            cat pr_info.txt
         - name: Checkout
           uses: actions/checkout@v3
         - name: Version Check
