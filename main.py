@@ -144,9 +144,13 @@ try:
                 GCHAT_MESSAGE.append(msg.get("closing_comment"))
 
     # 8. Google Chat integration with GitHub
+    print(f"value of event_Check: {EVENT_CHECK}")
+    print(f"value of event : {EVENT}")
     if (EVENT_CHECK or EVENT) and GCHAT_WEBHOOK_URL:
         message = msg.get("default")
+        print(f"default massage: {message}")
         message = msg.get(EVENT, message)
+        print(f"event massage : {message}")
         if EVENT_CHECK =='stale' :
             message ='\n'.join(GCHAT_MESSAGE)
         else :
@@ -155,6 +159,7 @@ try:
         
         
         response = send_message_to_google_chat(message, GCHAT_WEBHOOK_URL)
+        print(response)
 
 except Exception as e:
     print(f"Failed to run the job. Exception: {str(e)}")
