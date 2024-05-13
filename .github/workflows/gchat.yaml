@@ -12,7 +12,7 @@ env:
   REPO_NAME: ${{ github.repository }}
   PR_NUMBER: ${{ github.event.pull_request.number }}
   EVENT: ${{ github.event.action }} 
-  WEBHOOK: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
+  WEBHOOK: ${{ secrets.GOOGLE_CHAT_WEBHOOK}}
 
  
 jobs:

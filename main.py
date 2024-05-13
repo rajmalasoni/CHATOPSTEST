@@ -144,7 +144,7 @@ try:
                 GCHAT_MESSAGE.append(msg.get("closing_comment"))
 
     # 8. Google Chat integration with GitHub
-    if (EVENT_CHECK or EVENT) and GCHAT_WEBHOOK_UR:
+    if (EVENT_CHECK or EVENT) and GCHAT_WEBHOOK_URL:
         message = msg.get("default")
         message = msg.get(EVENT, message)
         if EVENT_CHECK =='stale' :
