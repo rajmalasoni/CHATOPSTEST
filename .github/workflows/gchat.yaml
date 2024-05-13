@@ -24,7 +24,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: pr-info
-          path: .
+          path: pr_info.txt
 
       # Read the contents of pr-info.txt
       - name: Read Artifact
