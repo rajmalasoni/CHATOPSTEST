@@ -36,11 +36,11 @@ jobs:
         uses: ./
         env:
           VERSION_FILE: ${{ steps.latestTag.outputs.version_file }}
-      - name: Trigger Workflow A
+      - name: Trigger Gchat
         uses: peter-evans/repository-dispatch@v1
         with:
             token: ${{ secrets.GITHUB_TOKEN }}
-            event-type: trigger-workflow-a
+            event-type: trigger-gchat
             client-payload: |
                             {
                               "EVENT_CHECK_VARIABLE": "${{ env.EVENT_CHECK_VARIABLE }}",

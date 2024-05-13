@@ -146,7 +146,7 @@ try:
     # 8. Google Chat integration with GitHub
     print(f"value of event_Check: {EVENT_CHECK}")
     print(f"value of event : {EVENT}")
-    if (EVENT_CHECK or EVENT) and GCHAT_WEBHOOK_URL:
+    if EVENT_CHECK and GCHAT_WEBHOOK_URL:
         message = msg.get("default")
         print(f"default massage: {message}")
         message = msg.get(EVENT, message)

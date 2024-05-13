@@ -2,7 +2,7 @@ name: Google-Chat-Integration
 
 on:
   repository_dispatch:
-    types: [trigger-workflow-a]
+    types: [trigger-gchat]
 
 permissions: write-all
 
