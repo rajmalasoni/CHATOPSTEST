@@ -2,6 +2,7 @@ name: check if notification is sent to gchat
 
 on:
   issue_comment:
+    types: [created]
 
 permissions: write-all
 
