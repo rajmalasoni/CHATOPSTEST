@@ -29,7 +29,26 @@ jobs:
           ls -l pr_info.txt
           pwd 
           du -sh pr_info.txt
+    # Debugging and ensuring artifact upload
+      - name: Display PR Info
+        run: |
+          cat pr_info.txt
+          ls -l pr_info.txt
+          pwd 
+          du -sh pr_info.txt
+         
+      - name: Upload Artifact
+        id: upload_artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: pr-info
+          path: pr_info.txt
+        env:
+          ACTIONS_STEP_DEBUG: true  # Enable step debugging for detailed logs
 
+      - name: Debug Uploaded Artifact
+        run: |
+            echo "Uploaded artifact size: $(du -sh ${{ steps.upload_artifact.outputs.artifact_path }})"
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -51,24 +70,4 @@ jobs:
         env:
           VERSION_FILE: ${{ steps.latestTag.outputs.version_file }}
 
-      # Debugging and ensuring artifact upload
-      - name: Display PR Info
-        run: |
-          cat pr_info.txt
-          ls -l pr_info.txt
-          pwd 
-          du -sh pr_info.txt
-             
-
-      - name: Upload Artifact
-        id: upload_artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: pr-info
-          path: pr_info.txt
-        env:
-          ACTIONS_STEP_DEBUG: true  # Enable step debugging for detailed logs
-
-      - name: Debug Uploaded Artifact
-        run: |
-          echo "Uploaded artifact size: $(du -sh ${{ steps.upload_artifact.outputs.artifact_path }})"
+      
