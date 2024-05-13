@@ -157,7 +157,7 @@ try:
             for n in GCHAT_MESSAGE:
                 message =message +'\nIssue comment : ' + n
         
-        
+        print(message)
         response = send_message_to_google_chat(message, GCHAT_WEBHOOK_URL)
         print(response)
 
