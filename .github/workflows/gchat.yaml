@@ -1,4 +1,4 @@
-name: Trigger Workflow on GitHub Actions Bot Comment
+name: Google-Chat-Integration
 
 on:
   workflow_run:
