@@ -1,4 +1,3 @@
-# Description: This workflow triggers on a pull request and checks for PR Description, Target Checker, Version, and closes the PR if it has a DO NOT MERGE label.
 name: PR Check 
 on:
   pull_request:
@@ -12,8 +11,6 @@ env:
   REPO_NAME: ${{ github.repository }}
   PR_NUMBER: ${{ github.event.pull_request.number }}
   
-  
- 
 jobs:
     Check-PR:
       runs-on: ubuntu-latest
@@ -25,8 +22,15 @@ jobs:
             echo "EVENT=${{ github.event.action }}" >> pr_info.txt
             echo "EVENT_CHECK_VARIABLE= $EVENT_CHECK_VARIABLE " >> pr_info.txt 
             cat pr_info.txt
+        
+        # Troubleshooting Step 1: Check the contents of the pr_info.txt file
+        - name: Check pr_info.txt content
+          run: |
+            cat pr_info.txt
+          
         - name: Checkout
           uses: actions/checkout@v3
+          
         - name: Version Check
           id: latestTag
           run: |
@@ -38,8 +42,15 @@ jobs:
             else 
              echo "No file"
             fi
+        
+        # Troubleshooting Step 2: Check if the VERSION file exists and its content
+        - name: Check VERSION file
+          run: |
+            ls -l VERSION
+            cat VERSION || echo "VERSION file does not exist"
+          
         - name: PR Description, Target Checker, Version and Close the PR having DO NOT MERGE LABEL
-          uses: ./
+          uses: ./ # Assuming this is your custom action
           env:
             VERSION_FILE: ${{ steps.latestTag.outputs.version_file }}
           
@@ -47,7 +58,4 @@ jobs:
           uses: actions/upload-artifact@v2
           with:
             name: pr-info
-            path: pr_info.txt        
-            
-      
-      
+            path: pr_info.txt
