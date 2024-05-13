@@ -2,7 +2,7 @@ name: Trigger Workflow on GitHub Actions Bot Comment
 
 on:
   issue_comment:
-    types: [created]
+    types: [created, edited]
 
 jobs:
   trigger_workflow:
@@ -21,4 +21,5 @@ jobs:
       - name: Trigger Workflow
         if: steps.bot_comment_check.outputs.bot_comment == 'true'
         run: echo "Triggered by GitHub Actions bot comment"
+        # Add your workflow steps here
         # Add your workflow steps here
