@@ -1,29 +1,24 @@
-name: check if notification is sent to gchat
+name: Trigger Workflow on GitHub Actions Bot Comment
 
 on:
-  workflow_run:
-    workflows: ["PR Description, Target Checker, Version, and Close the PR having DO NOT MERGE LABEL"]
-    types: [completed]
-  
-  pull_request:
-    types: [opened, edited, reopened , closed]
   issue_comment:
-    
+    types: [created]
 
-permissions: write-all
-
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  REPO_NAME: ${{ github.repository }}
-  EVENT: ${{ github.event.action }} 
-  WEBHOOK: ${{ secrets.GOOGLE_CHAT_WEBHOOK}}
-
- 
 jobs:
-  Google-Chat-Integration:
+  trigger_workflow:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Google Chat Integration
-        uses: ./
+      - name: Check if comment was made by GitHub Actions bot
+        id: bot_comment_check
+        run: |
+          if [ "${{ github.event.comment.user.login }}" == "github-actions[bot]" ]; then
+            echo "::set-output name=bot_comment::true"
+          else
+            echo "::set-output name=bot_comment::false"
+          fi
+      
+      - name: Trigger Workflow
+        if: steps.bot_comment_check.outputs.bot_comment == 'true'
+        run: echo "Triggered by GitHub Actions bot comment"
+        # Add your workflow steps here
