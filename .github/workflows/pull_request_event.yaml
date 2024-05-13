@@ -64,4 +64,4 @@ jobs:
       # Add this step to debug the uploaded artifact size
       - name: Debug Uploaded Artifact
         run: |
-            echo "Uploaded artifact size: $(du -sh ${{ steps.upload_artifact.outputs.artifact_path }})"
+          echo "Uploaded artifact size: $(du -sh ${{ github.workspace }}/pr_info.txt)"
