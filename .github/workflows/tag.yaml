@@ -38,4 +38,4 @@ jobs:
         run: git push origin $VERSION --tags
         if: ${{ env.CREATE_TAG }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

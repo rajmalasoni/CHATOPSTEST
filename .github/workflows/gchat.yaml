@@ -1,0 +1,24 @@
+name: Trigger Workflow on GitHub Actions Bot Comment
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  trigger_workflow:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check if comment was made by GitHub Actions bot
+        id: bot_comment_check
+        run: |
+          if [ "${{ github.event.comment.user.login }}" == "github-actions[bot]" ]; then
+            echo "::set-output name=bot_comment::true"
+          else
+            echo "::set-output name=bot_comment::false"
+          fi
+      
+      - name: Trigger Workflow
+        if: steps.bot_comment_check.outputs.bot_comment == 'true'
+        run: echo "Triggered by GitHub Actions bot comment"
+        # Add your workflow steps here

@@ -11,8 +11,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   REPO_NAME: ${{ github.repository }}
   PR_NUMBER: ${{ github.event.pull_request.number }}
-  EVENT: ${{ github.event.action }} 
-  WEBHOOK: ${{ secrets.GCHAT_WEBHOOK_URL}}
+  
   
  
 jobs:
