@@ -15,47 +15,29 @@ jobs:
   Check-PR:
     runs-on: ubuntu-latest
     steps:
-     - name: Checkout
-       uses: actions/checkout@v3
-     - name: Set PR Info
-       id: set_pr_info
-       run: |
+      - name: Set PR Info
+        id: set_pr_info
+        run: |
           echo "PR_NUMBER=${{ github.event.pull_request.number }}" >> pr_info.txt
           echo "EVENT=${{ github.event.action }}" >> pr_info.txt
           echo "EVENT_CHECK_VARIABLE= $EVENT_CHECK_VARIABLE " >> pr_info.txt
           cat pr_info.txt
 
-      # Check if pr_info.txt exists
-     - name: Check if pr_info.txt exists
-       run: |
-          ls -l pr_info.txt
-          pwd 
-          du -sh pr_info.txt
-    # Debugging and ensuring artifact upload
-     - name: Display PR Info
-       run: |
-          cat pr_info.txt
-          ls -l pr_info.txt
-          pwd 
-          du -sh pr_info.txt
-         
-     - name: Upload Artifact
-       id: upload_artifact
-       uses: actions/upload-artifact@v2
-       with:
-        name: pr-info
-        path: pr_info.txt
-       env:
-          ACTIONS_STEP_DEBUG: true  # Enable step debugging for detailed logs
+      # Commit and push pr_info.txt file
+      - name: Commit and Push pr_info.txt
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add pr_info.txt
+          git commit -m "Add pr_info.txt file"
+          git push
 
-     - name: Debug Uploaded Artifact
-       run: |
-            echo "Uploaded artifact size: $(du -sh ${{ steps.upload_artifact.outputs.artifact_path }})"
-     
+      - name: Checkout
+        uses: actions/checkout@v3
 
-     - name: Version Check
-       id: latestTag
-       run: |
+      - name: Version Check
+        id: latestTag
+        run: |
           if [ -f "VERSION" ]; then
             echo "File is present"        
             version_file=$(cat VERSION)
@@ -66,9 +48,21 @@ jobs:
           fi
 
       # Assuming this is your custom action for PR Description, Target Checker, Version, and Closing PR with DO NOT MERGE label
-     - name: PR Description, Target Checker, Version and Close the PR having DO NOT MERGE LABEL
-       uses: ./ # Assuming this is your custom action
-       env:
+      - name: PR Description, Target Checker, Version and Close the PR having DO NOT MERGE LABEL
+        uses: ./ # Assuming this is your custom action
+        env:
           VERSION_FILE: ${{ steps.latestTag.outputs.version_file }}
 
-      
+      # Upload pr_info.txt file as artifact
+      - name: Upload Artifact
+        id: upload_artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: pr-info
+          path: pr_info.txt
+        env:
+          ACTIONS_STEP_DEBUG: true  # Enable step debugging for detailed logs
+
+      - name: Debug Uploaded Artifact
+        run: |
+          echo "Uploaded artifact size: $(du -sh ${{ steps.upload_artifact.outputs.artifact_path }})"
