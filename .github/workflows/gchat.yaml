@@ -1,8 +1,6 @@
 name: check if notification is sent to gchat
 
 on:
-  pull_request:
-    types: [opened, edited, reopened , closed]
   issue_comment:
 
 permissions: write-all
@@ -10,7 +8,6 @@ permissions: write-all
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   REPO_NAME: ${{ github.repository }}
-  PR_NUMBER: ${{ github.event.pull_request.number }}
   EVENT: ${{ github.event.action }} 
   WEBHOOK: ${{ secrets.GOOGLE_CHAT_WEBHOOK}}
 
