@@ -41,6 +41,11 @@ jobs:
         with:
             token: ${{ secrets.GITHUB_TOKEN }}
             event-type: trigger-workflow-a
+            client-payload: |
+                            {
+                              "EVENT_CHECK_VARIABLE": "${{ env.EVENT_CHECK_VARIABLE }}",
+                              "PR_NUMBER": "${{ env.PR_NUMBER }}"
+                            }
         
 
         

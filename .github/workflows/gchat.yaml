@@ -17,18 +17,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-      # Download the artifact
-      - name: Download Artifact
-        uses: actions/download-artifact@v2
+      - name: Google Chat Integration
+        uses: ./
         with:
-          name: pr-info
-          path: pr_info.txt
-
-      # Read the contents of pr-info.txt
-      - name: Read Artifact
-        run: |
-          pr_info=$(cat pr-info.txt)
-          echo "PR Info: $pr_info"
-          # Now you can use the PR info in your workflow
-        
+          EVENT_CHECK_VARIABLE: ${{ github.event.client_payload.EVENT_CHECK_VARIABLE }}
+          PR_NUMBER: ${{ github.event.client_payload.PR_NUMBER }}
