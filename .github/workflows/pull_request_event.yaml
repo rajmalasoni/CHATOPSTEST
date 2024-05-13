@@ -3,7 +3,7 @@ on:
   pull_request:
     types: [opened, edited, reopened, labeled]
    
-permissions: write-all    
+permissions: write-all   # <- Add a colon here    
       
 env:
   EVENT_CHECK_VARIABLE: 'pull'
@@ -63,4 +63,5 @@ jobs:
           
       # Add this step to debug the uploaded artifact size
       - name: Debug Uploaded Artifact
-        run: echo "Uploaded artifact size: $(du -sh ${{ steps.upload_artifact.outputs.artifact_path }})"
+        run: |
+            echo "Uploaded artifact size: $(du -sh ${{ steps.upload_artifact.outputs.artifact_path }})"
