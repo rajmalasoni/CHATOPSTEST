@@ -1,5 +1,5 @@
 # Description: This workflow triggers on a pull request and checks for PR Description, Target Checker, Version, and closes the PR if it has a DO NOT MERGE label.
-name: PR Description ,Target Checker ,Version and Close the PR having DO NOT MERGE LABEL
+name: PR Check 
 on:
   pull_request:
     types: [opened, edited, reopened,labeled]
@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: PR Description ,Target Checker ,Version and Close the PR having DO NOT MERGE LABEL
+      - name: Version Check
         id: latestTag
         run: |
           if [ -f "VERSION" ]; then
