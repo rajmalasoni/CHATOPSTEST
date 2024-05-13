@@ -1,68 +1,49 @@
-name: PR Check 
+# Description: This workflow triggers on a pull request and checks for PR Description, Target Checker, Version, and closes the PR if it has a DO NOT MERGE label.
+name: PR Description ,Target Checker ,Version and Close the PR having DO NOT MERGE LABEL
 on:
   pull_request:
-    types: [opened, edited, reopened, labeled]
-
-permissions: write-all
-
+    types: [opened, edited, reopened,labeled]
+   
+permissions: write-all    
+      
 env:
   EVENT_CHECK_VARIABLE: 'pull'
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   REPO_NAME: ${{ github.repository }}
   PR_NUMBER: ${{ github.event.pull_request.number }}
+  
 
+  
+ 
 jobs:
   Check-PR:
     runs-on: ubuntu-latest
     steps:
-      - name: Set PR Info
-        id: set_pr_info
-        run: |
-          echo "PR_NUMBER=${{ github.event.pull_request.number }}" >> pr_info.txt
-          echo "EVENT=${{ github.event.action }}" >> pr_info.txt
-          echo "EVENT_CHECK_VARIABLE= $EVENT_CHECK_VARIABLE " >> pr_info.txt
-          cat pr_info.txt
-
-      # Commit and push pr_info.txt file
-      - name: Commit and Push pr_info.txt
-        run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-          git add pr_info.txt
-          git commit -m "Add pr_info.txt file"
-          git push
-
       - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Version Check
+      - name: PR Description ,Target Checker ,Version and Close the PR having DO NOT MERGE LABEL
         id: latestTag
         run: |
           if [ -f "VERSION" ]; then
-            echo "File is present"        
+            echo " File is present"        
             version_file=$(cat VERSION)
-            echo "Version from version_file -> $version_file"
+            echo "version from version_file -> $version_file"
             echo "version_file=$version_file" >> $GITHUB_OUTPUT
           else 
-            echo "No file"
+           echo "no file"
           fi
-
-      # Assuming this is your custom action for PR Description, Target Checker, Version, and Closing PR with DO NOT MERGE label
-      - name: PR Description, Target Checker, Version and Close the PR having DO NOT MERGE LABEL
-        uses: ./ # Assuming this is your custom action
+      - name: PR Description ,Target Checker ,Version and Close the PR having DO NOT MERGE LABEL
+        uses: ./
         env:
           VERSION_FILE: ${{ steps.latestTag.outputs.version_file }}
-
-      # Upload pr_info.txt file as artifact
-      - name: Upload Artifact
-        id: upload_artifact
-        uses: actions/upload-artifact@v2
+      - name: Trigger Workflow A
+        uses: peter-evans/repository-dispatch@v1
         with:
-          name: pr-info
-          path: pr_info.txt
-        env:
-          ACTIONS_STEP_DEBUG: true  # Enable step debugging for detailed logs
+            token: ${{ secrets.GITHUB_TOKEN }}
+            event-type: trigger-workflow-a
+        
 
-      - name: Debug Uploaded Artifact
-        run: |
-          echo "Uploaded artifact size: $(du -sh ${{ steps.upload_artifact.outputs.artifact_path }})"
+        
+            
+      
+      
