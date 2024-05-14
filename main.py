@@ -55,7 +55,7 @@ try:
         msg["reopened"] = f"Pull Request Reopened by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}\nStatus: {pr.state}"
 
     # Get current datetime and add 5 days
-    now = datetime.now() + timedelta(days=5)
+    now = datetime.now() + timedelta(days=3)
 
     # Check events based on the workflow type
     if EVENT_CHECK == 'stale':
