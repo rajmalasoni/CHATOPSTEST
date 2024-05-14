@@ -12,7 +12,8 @@ try:
     repo_name = os.environ['REPO_NAME']
     pulls = repo.get_pulls(state='open')
     GCHAT_MESSAGE = []
-    pr_number = int(os.environ.get('PR_NUMBER', 0))
+    pr_number_str = os.environ.get('PR_NUMBER')
+    pr_number = int(pr_number_str) if pr_number_str else None
     pr = repo.get_pull(pr_number) if pr_number else None
     MERGE_PR = os.environ.get("MERGE_PR")
     CLOSE_PR = os.environ.get("CLOSE_PR")
