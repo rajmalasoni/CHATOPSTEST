@@ -48,7 +48,7 @@ try:
 
     # Define default messages based on events
     if pr:
-        msg["default"] = f"An Event is created on PR:\nTitle: {pr.title}\nURL: {pr.html_url}\nStatus: {pr.state}"
+        msg["default"] = f"@{pr.user.login} An Event is created on PR:\nTitle: {pr.title}\nURL: {pr.html_url}\nStatus: {pr.state}"
         msg["opened"] = f"New Pull Request Created by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}\nStatus: {pr.state}"
         msg["edited"] = f"Pull Request Edited by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}\nStatus: {pr.state}"
         msg["closed"] = f"Pull Request Closed by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}\nStatus: {pr.state}"
@@ -145,19 +145,13 @@ try:
 
     # Google Chat integration with GitHub
     if EVENT_CHECK and GCHAT_WEBHOOK_URL:
-        if EVENT_CHECK != 'stale' and pr:
-            user = pr.user.login
-            message = "@" + user
-            GCHAT_MESSAGE = [message] + GCHAT_MESSAGE
-
-        
+        message = msg.get("default")
+        message = msg.get(EVENT, message)       
         if EVENT_CHECK == 'stale':
-            message = msg.get("default")
-            message = msg.get(EVENT, message)
+            
             message = '\n'.join(GCHAT_MESSAGE)
         else:
-            message = msg.get("default")
-            message = msg.get(EVENT, message)
+            
             for n in GCHAT_MESSAGE:
                 message = message + '\n' + n
            
