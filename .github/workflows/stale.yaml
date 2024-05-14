@@ -7,27 +7,16 @@ on:
 permissions: write-all
 
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-  REPO_NAME: ${{ github.repository }}
-  EVENT_CHECK_VARIABLE: 'stale'
- 
-
-
+     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+     REPO_NAME: ${{ github.repository }}
+     EVENT_CHECK_VARIABLE: 'stale'
+     WEBHOOK: ${{ secrets.GCHAT_WEBHOOK_URL}}
+   
 jobs:
-  Stale-PR:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Stale PR
-        uses: ./    
-      - name: Trigger Gchat
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          event-type: trigger-gchat
-          client-payload: |
-            {
-              "EVENT_CHECK_VARIABLE": "${{ env.EVENT_CHECK_VARIABLE }}"
-              
-            }
+    Stale-PR:
+       runs-on: ubuntu-latest
+       steps:
+         - name: Checkout
+           uses: actions/checkout@v3
+         - name: Stale PR
+           uses: ./ 
