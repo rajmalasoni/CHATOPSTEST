@@ -12,7 +12,7 @@ try:
     repo_name = os.environ['REPO_NAME']
     pulls = repo.get_pulls(state='open')
     GCHAT_MESSAGE = []
-    pr_number = int(os.environ['PR_NUMBER']) if os.environ.get('PR_NUMBER') else None
+    pr_number = int(os.environ.get('PR_NUMBER', 0))
     pr = repo.get_pull(pr_number) if pr_number else None
     MERGE_PR = os.environ.get("MERGE_PR")
     CLOSE_PR = os.environ.get("CLOSE_PR")
@@ -53,10 +53,9 @@ try:
         msg["closed"] = f"Pull Request Closed by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}\nStatus: {pr.state}"
         msg["reopened"] = f"Pull Request Reopened by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}\nStatus: {pr.state}"
 
-    # Get current datetime
-    #now = datetime.now()
     # Get current datetime and add 5 days
     now = datetime.now() + timedelta(days=5)
+
     # Check events based on the workflow type
     if EVENT_CHECK == 'stale':
         # 1. Add "Stale" label to the PR if no activity for 15 days
@@ -138,8 +137,10 @@ try:
     # Include PR comments in the Google Chat message
     if pr:
         comments = pr.get_issue_comments()
-        for comment in comments:
-            GCHAT_MESSAGE.append(f"Issue Comment by {comment.user.login}: {comment.body}")
+        if comments:
+            for comment in comments:
+                user_login = comment.user.login if comment.user else "Unknown"
+                GCHAT_MESSAGE.append(f"Issue Comment by {user_login}: {comment.body}")
 
     # Google Chat integration with GitHub
     if EVENT_CHECK and GCHAT_WEBHOOK_URL:
