@@ -54,8 +54,9 @@ try:
         msg["reopened"] = f"Pull Request Reopened by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}\nStatus: {pr.state}"
 
     # Get current datetime
-    now = datetime.now()
-
+    #now = datetime.now()
+    # Get current datetime and add 5 days
+    now = datetime.now() + timedelta(days=5)
     # Check events based on the workflow type
     if EVENT_CHECK == 'stale':
         # 1. Add "Stale" label to the PR if no activity for 15 days
