@@ -145,8 +145,10 @@ try:
 
     # Google Chat integration with GitHub
     if EVENT_CHECK and GCHAT_WEBHOOK_URL:
-        user=pr.user.login
-        message="@" + user
+        if EVENT_CHECK != 'stale':
+            user=pr.user.login
+            message="@" + user
+
         message = msg.get("default")
         message = msg.get(EVENT, message)
 
