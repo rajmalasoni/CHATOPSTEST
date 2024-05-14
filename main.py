@@ -66,7 +66,7 @@ try:
             if time_diff > timedelta(days=msg.get("stale_days")) and not stale_label_present:
                 pull.create_issue_comment(msg.get("stale_label"))
                 pull.add_to_labels('Stale')
-                GCHAT_MESSAGE.append(f"@{pr.user.login}: {msg.get('stale_label')}")
+                GCHAT_MESSAGE.append(f"@{pull.user.login}: {msg.get('stale_label')}")
                 GCHAT_MESSAGE.append(f"URL: {pull.html_url}\nStatus: {pull.state}")
                
         # 2. Close stalled PR if no activity for 2 days
@@ -75,7 +75,7 @@ try:
                 if time_diff > timedelta(days=msg.get("stale_close_days")):
                     pull.edit(state="closed")
                     pull.create_issue_comment(msg.get("staled_PR_closing"))
-                    GCHAT_MESSAGE.append(f"@{pr.user.login}: {msg.get('staled_PR_closing')}")
+                    GCHAT_MESSAGE.append(f"@{pull.user.login}: {msg.get('staled_PR_closing')}")
                     GCHAT_MESSAGE.append(f"URL: {pull.html_url}\nStatus: {pull.state}")
 
     if EVENT_CHECK == 'pull':
