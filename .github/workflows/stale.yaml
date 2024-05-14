@@ -28,6 +28,6 @@ jobs:
           event-type: trigger-gchat
           client-payload: |
             {
-              "EVENT_CHECK_VARIABLE": "${{ env.EVENT_CHECK_VARIABLE }}",
+              "EVENT_CHECK_VARIABLE": "${{ env.EVENT_CHECK_VARIABLE }}"
               
             }
