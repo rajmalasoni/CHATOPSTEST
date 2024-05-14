@@ -21,31 +21,31 @@ try:
     GCHAT_WEBHOOK_URL = os.environ['WEBHOOK']
     EVENT_CHECK=os.environ['EVENT_CHECK_VARIABLE']
      
-     # Fuction to send the message to GCHAT
+     # Function to send the message to Google Chat
     def send_message_to_google_chat(message, webhook_url):
         payload = {"text": message}
         response = requests.post(webhook_url, json=payload)
         return response
 
-    # Define messages for Google Chat and comment body in Github
+    # Define messages for Google Chat and comment body in GitHub
     msg = {
-        "stale_label": 'This PR is stale because it has been open 15 days with no activity. Remove stale label and update PR otherwise this will be closed in next 2 days.',
+        "stale_label": 'This PR is stale because it has been open 15 days with no activity. Remove the stale label and update PR; otherwise, it will be closed in the next 2 days.',
         "stale_days": 2,
         "stale_close_days": 2,
         "staled_PR_closing": 'This PR was closed because it has been stalled for 2 days with no activity.',
-        "check_PR_target": 'Do not accept PR target from feature branch to master branch.',
-        "check_description": 'No Description on PR body. Please add valid description.',
+        "check_PR_target": 'Do not accept PR target from feature branch to the master branch.',
+        "check_description": 'No Description on PR body. Please add a valid description.',
         "approve_merge": 'Pull Request Approved and Merged!',
         "approve_comment": 'This pull request was approved and merged because of a slash command.',
         "closing_comment": 'This pull request was closed because of a slash command.',
         "check_version_file": 'The VERSION file exists. All ok',
         "version_file_inexistence": "The VERSION file does not exist. Closing this pull request.",
-        "tagcheck_success": "The VERSION didn't match with tag. All ok",
-        "tagcheck_reject": "The tag from VERSION file already exists. Please update the VERSION file.",
-        "label": "Please remove DO NOT MERGE LABEL",
+        "tagcheck_success": "The VERSION didn't match with the tag. All ok",
+        "tagcheck_reject": "The tag from the VERSION file already exists. Please update the VERSION file.",
+        "label": "Please remove the DO NOT MERGE LABEL",
     }
     
-    # Define default messages  based on events
+    # Define default messages based on events
     if pr:
         msg["default"] = f"An Event is created on PR:\nTitle: {pr.title}\nURL: {pr.html_url}"
         msg["opened"] = f"New Pull Request Created by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}"
@@ -56,7 +56,6 @@ try:
     # Get current datetime
     now = datetime.now() 
     
-    
     # Check events based on the workflow type
     if  EVENT_CHECK =='stale' :
        
@@ -64,27 +63,20 @@ try:
         for pull in pulls:
             time_diff = now - pull.updated_at
             stale_label_present = any(label.name == "Stale" for label in pull.labels)
-            if time_diff > timedelta(days=msg.get("stale_days"))and not stale_label_present:
+            if time_diff > timedelta(days=msg.get("stale_days")) and not stale_label_present:
                 pull.create_issue_comment(msg.get("stale_label"))
                 pull.add_to_labels('Stale')
-                #GCHAT_MESSAGE.append(msg.get("default"))
-                GCHAT_MESSAGE.append("The pr number:"+ str(pull.number)+" " +msg.get("stale_label"))
-                GCHAT_MESSAGE.append("URL: " + pull.html_url) 
-               
+                GCHAT_MESSAGE.append(f"The PR number: {pull.number}\n{msg.get('stale_label')}")
+                GCHAT_MESSAGE.append(f"URL: {pull.html_url}") 
                
         # 2. Close stalled PR if no activity for 2 days
         for pull in pulls:
-            print(f"hello from stale label:- {pull}")
             if "Stale" in [label.name for label in pull.labels]:
-                print("Stale label is present")
                 if time_diff > timedelta(days=msg.get("stale_close_days")):
-                    print(f"hello from  time-diff:- {time_diff}")
                     pull.edit(state="closed")
                     pull.create_issue_comment(msg.get("staled_PR_closing"))
-                    GCHAT_MESSAGE.append("The pr number:"+ str(pull.number)+ " "+msg.get("staled_PR_closing"))
-                    GCHAT_MESSAGE.append("URL: " + pull.html_url) 
-            else:
-                 print("Stale label is not present")
+                    GCHAT_MESSAGE.append(f"The PR number: {pull.number}\n{msg.get('staled_PR_closing')}")
+                    GCHAT_MESSAGE.append(f"URL: {pull.html_url}") 
                     
     if EVENT_CHECK =='pull':
         # 3. Check if the PR targets the master branch directly
@@ -148,14 +140,15 @@ try:
     print(f"value of event : {EVENT}")
     if EVENT_CHECK and GCHAT_WEBHOOK_URL:
         message = msg.get("default")
-        print(f"default massage: {message}")
+        print(f"default message: {message}")
         message = msg.get(EVENT, message)
-        print(f"event massage : {message}")
-        if EVENT_CHECK =='stale' :
-            message ='\n'.join(GCHAT_MESSAGE)
-        else :
+        print(f"event message: {message}")
+
+        if EVENT_CHECK =='stale':
+            message = '\n'.join(GCHAT_MESSAGE)
+        else:
             for n in GCHAT_MESSAGE:
-                message =message +'\nIssue comment : ' + n
+                message = message + '\nIssue comment : ' + n
         
         print(message)
         response = send_message_to_google_chat(message, GCHAT_WEBHOOK_URL)
