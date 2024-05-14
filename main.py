@@ -150,11 +150,14 @@ try:
             message = "@" + user
             GCHAT_MESSAGE = [message] + GCHAT_MESSAGE
 
-        message = msg.get("default")
-        message = msg.get(EVENT, message)
+        
         if EVENT_CHECK == 'stale':
+            message = msg.get("default")
+            message = msg.get(EVENT, message)
             message = '\n'.join(GCHAT_MESSAGE)
         else:
+            message = msg.get("default")
+            message = msg.get(EVENT, message)
             for n in GCHAT_MESSAGE:
                 message = message + '\n' + n
            
