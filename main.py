@@ -149,15 +149,18 @@ try:
             user=pr.user.login
             message="@" + user
 
+        print(f"message from user: {message}")   
         message = msg.get("default")
+        print(f"message from default: {message}")
         message = msg.get(EVENT, message)
-
+        print(f"message from event: {message}")
         if EVENT_CHECK == 'stale':
             message = '\n'.join(GCHAT_MESSAGE)
         else:
             for n in GCHAT_MESSAGE:
                 message = message + '\n' + n
-
+           
+        print(f"message from final: {message}")
         response = send_message_to_google_chat(message, GCHAT_WEBHOOK_URL)
         print(response)
 
