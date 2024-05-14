@@ -47,11 +47,11 @@ try:
 
     # Define default messages based on events
     if pr:
-        msg["default"] = f"An Event is created on PR:\nTitle: {pr.title}\nURL: {pr.html_url}"
-        msg["opened"] = f"New Pull Request Created by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}"
-        msg["edited"] = f"Pull Request Edited by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}"
-        msg["closed"] = f"Pull Request Closed by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}"
-        msg["reopened"] = f"Pull Request Reopened by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}"
+        msg["default"] = f"An Event is created on PR:\nTitle: {pr.title}\nURL: {pr.html_url}\nStatus: {pr.state}"
+        msg["opened"] = f"New Pull Request Created by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}\nStatus: {pr.state}"
+        msg["edited"] = f"Pull Request Edited by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}\nStatus: {pr.state}"
+        msg["closed"] = f"Pull Request Closed by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}\nStatus: {pr.state}"
+        msg["reopened"] = f"Pull Request Reopened by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}\nStatus: {pr.state}"
 
     # Get current datetime
     now = datetime.now()
@@ -66,7 +66,7 @@ try:
                 pull.create_issue_comment(msg.get("stale_label"))
                 pull.add_to_labels('Stale')
                 GCHAT_MESSAGE.append(f"The PR number: {pull.number}\n{msg.get('stale_label')}")
-                GCHAT_MESSAGE.append(f"URL: {pull.html_url}")
+                GCHAT_MESSAGE.append(f"URL: {pull.html_url}\nStatus: {pull.state}")
 
         # 2. Close stalled PR if no activity for 2 days
         for pull in pulls:
@@ -75,7 +75,7 @@ try:
                     pull.edit(state="closed")
                     pull.create_issue_comment(msg.get("staled_PR_closing"))
                     GCHAT_MESSAGE.append(f"The PR number: {pull.number}\n{msg.get('staled_PR_closing')}")
-                    GCHAT_MESSAGE.append(f"URL: {pull.html_url}")
+                    GCHAT_MESSAGE.append(f"URL: {pull.html_url}\nStatus: {pull.state}")
 
     if EVENT_CHECK == 'pull':
         # 3. Check if the PR targets the master branch directly
