@@ -9,19 +9,19 @@ try:
     
     # Get repository and other environment variables
     repo = g.get_repo(os.environ['REPO_NAME'])
-    repo_name=os.environ['REPO_NAME']
+    repo_name = os.environ['REPO_NAME']
     pulls = repo.get_pulls(state='open')
-    GCHAT_MESSAGE=[]
-    pr_number = int(os.environ['PR_NUMBER']) if ( os.environ['PR_NUMBER'] ) else None
-    pr = repo.get_pull(pr_number) if(pr_number) else None    
+    GCHAT_MESSAGE = []
+    pr_number = int(os.environ['PR_NUMBER']) if os.environ.get('PR_NUMBER') else None
+    pr = repo.get_pull(pr_number) if pr_number else None
     MERGE_PR = os.environ.get("MERGE_PR")
     CLOSE_PR = os.environ.get("CLOSE_PR")
     VERSION_FILE = os.environ.get("VERSION_FILE")
     EVENT = os.environ['EVENT']
     GCHAT_WEBHOOK_URL = os.environ['WEBHOOK']
-    EVENT_CHECK=os.environ['EVENT_CHECK_VARIABLE']
-     
-     # Function to send the message to Google Chat
+    EVENT_CHECK = os.environ['EVENT_CHECK_VARIABLE']
+
+    # Function to send the message to Google Chat
     def send_message_to_google_chat(message, webhook_url):
         payload = {"text": message}
         response = requests.post(webhook_url, json=payload)
@@ -41,10 +41,10 @@ try:
         "check_version_file": 'The VERSION file exists. All ok',
         "version_file_inexistence": "The VERSION file does not exist. Closing this pull request.",
         "tagcheck_success": "The VERSION didn't match with the tag. All ok",
-        "tagcheck_reject": "The tag from the VERSION file already exists. Please update the VERSION file.",
+        "tagcheck_reject": "The tag from VERSION file already exists. Please update the VERSION file.",
         "label": "Please remove the DO NOT MERGE LABEL",
     }
-    
+
     # Define default messages based on events
     if pr:
         msg["default"] = f"An Event is created on PR:\nTitle: {pr.title}\nURL: {pr.html_url}"
@@ -52,13 +52,12 @@ try:
         msg["edited"] = f"Pull Request Edited by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}"
         msg["closed"] = f"Pull Request Closed by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}"
         msg["reopened"] = f"Pull Request Reopened by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}"
-        
+
     # Get current datetime
-    now = datetime.now() 
-    
+    now = datetime.now()
+
     # Check events based on the workflow type
-    if  EVENT_CHECK =='stale' :
-       
+    if EVENT_CHECK == 'stale':
         # 1. Add "Stale" label to the PR if no activity for 15 days
         for pull in pulls:
             time_diff = now - pull.updated_at
@@ -67,8 +66,8 @@ try:
                 pull.create_issue_comment(msg.get("stale_label"))
                 pull.add_to_labels('Stale')
                 GCHAT_MESSAGE.append(f"The PR number: {pull.number}\n{msg.get('stale_label')}")
-                GCHAT_MESSAGE.append(f"URL: {pull.html_url}") 
-               
+                GCHAT_MESSAGE.append(f"URL: {pull.html_url}")
+
         # 2. Close stalled PR if no activity for 2 days
         for pull in pulls:
             if "Stale" in [label.name for label in pull.labels]:
@@ -76,25 +75,25 @@ try:
                     pull.edit(state="closed")
                     pull.create_issue_comment(msg.get("staled_PR_closing"))
                     GCHAT_MESSAGE.append(f"The PR number: {pull.number}\n{msg.get('staled_PR_closing')}")
-                    GCHAT_MESSAGE.append(f"URL: {pull.html_url}") 
-                    
-    if EVENT_CHECK =='pull':
+                    GCHAT_MESSAGE.append(f"URL: {pull.html_url}")
+
+    if EVENT_CHECK == 'pull':
         # 3. Check if the PR targets the master branch directly
         for pull in pulls:
             if pull.base.ref == 'master' and not pull.head.ref.startswith('release/'):
                 pull.edit(state='closed')
                 pull.create_issue_comment(msg.get("check_PR_target"))
                 GCHAT_MESSAGE.append(msg.get("check_PR_target"))
-        
+
         # 4. Check if the PR has a description
         for pull in pulls:
             if not pull.body:
                 pull.edit(state='closed')
                 pull.create_issue_comment(msg.get("check_description"))
                 GCHAT_MESSAGE.append(msg.get("check_description"))
-                
+
         # 5. Check if the version from "VERSION" file exists as a tag
-        if pr and VERSION_FILE:    
+        if pr and VERSION_FILE:
             tags = repo.get_tags()
             tag_exist = False
             for tag in tags:
@@ -120,37 +119,38 @@ try:
                 pr.create_issue_comment(msg.get("label"))
                 GCHAT_MESSAGE.append(msg.get("label"))
 
-    if EVENT_CHECK =='slash':
+    if EVENT_CHECK == 'slash':
         # 7.1 Check if the Approved comment is in the PR comments
         if MERGE_PR == 'true':
-            if pr:    
+            if pr:
                 pr.merge(merge_method='merge', commit_message=msg.get("approve_merge"))
                 pr.create_issue_comment(msg.get("approve_comment"))
                 GCHAT_MESSAGE.append(msg.get("approve_comment"))
-    
+
         # 7.2 Check if the Close comment is in the PR comments
         if CLOSE_PR == 'true':
-            if pr:            
+            if pr:
                 pr.edit(state="closed")
                 pr.create_issue_comment(msg.get("closing_comment"))
                 GCHAT_MESSAGE.append(msg.get("closing_comment"))
 
-    # 8. Google Chat integration with GitHub
-    print(f"value of event_Check: {EVENT_CHECK}")
-    print(f"value of event : {EVENT}")
+    # Include PR comments in the Google Chat message
+    if pr:
+        comments = pr.get_issue_comments()
+        for comment in comments:
+            GCHAT_MESSAGE.append(f"Issue Comment by {comment.user.login}: {comment.body}")
+
+    # Google Chat integration with GitHub
     if EVENT_CHECK and GCHAT_WEBHOOK_URL:
         message = msg.get("default")
-        print(f"default message: {message}")
         message = msg.get(EVENT, message)
-        print(f"event message: {message}")
 
-        if EVENT_CHECK =='stale':
+        if EVENT_CHECK == 'stale':
             message = '\n'.join(GCHAT_MESSAGE)
         else:
             for n in GCHAT_MESSAGE:
-                message = message + '\nIssue comment : ' + n
-        
-        print(message)
+                message = message + '\n' + n
+
         response = send_message_to_google_chat(message, GCHAT_WEBHOOK_URL)
         print(response)
 
