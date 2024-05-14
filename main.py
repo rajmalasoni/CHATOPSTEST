@@ -31,7 +31,7 @@ try:
     # Define messages for Google Chat and comment body in GitHub
     msg = {
         "stale_label": 'This PR is stale because it has been open 15 days with no activity. Remove the stale label and update PR; otherwise, it will be closed in the next 2 days.',
-        "stale_days": 3,
+        "stale_days": 15,
         "stale_close_days": 2,
         "staled_PR_closing": 'This PR was closed because it has been stalled for 2 days with no activity.',
         "check_PR_target": 'Do not accept PR target from feature branch to the master branch.',
@@ -55,7 +55,7 @@ try:
         msg["reopened"] = f"Pull Request Reopened by {pr.user.login}:\nTitle: {pr.title}\nURL: {pr.html_url}\nStatus: {pr.state}"
 
     # Get current datetime and add 5 days
-    now = datetime.now() + timedelta(days=3)
+    now = datetime.now() 
 
     # Check events based on the workflow type
     if EVENT_CHECK == 'stale':
