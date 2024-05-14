@@ -1,7 +1,7 @@
 #  Description: This workflow is scheduled to check for stale pull requests and close them after two days of inactivity.
 name: Stale Pull Requests
 on:
-  #push:
+  push:
   schedule:
    - cron: '0 9 * * *' # scheduler runs every day at 9:00am UTC
 permissions: write-all
@@ -9,6 +9,7 @@ permissions: write-all
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
   REPO_NAME: ${{ github.repository }}
+  EVENT_CHECK_VARIABLE: 'stale'
  
 
 
@@ -20,3 +21,13 @@ jobs:
         uses: actions/checkout@v3
       - name: Stale PR
         uses: ./    
+      - name: Trigger Gchat
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: trigger-gchat
+          client-payload: |
+            {
+              "EVENT_CHECK_VARIABLE": "${{ env.EVENT_CHECK_VARIABLE }}",
+              
+            }
