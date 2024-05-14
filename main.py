@@ -30,8 +30,8 @@ try:
     # Define messages for Google Chat and comment body in GitHub
     msg = {
         "stale_label": 'This PR is stale because it has been open 15 days with no activity. Remove the stale label and update PR; otherwise, it will be closed in the next 2 days.',
-        "stale_days": 2,
-        "stale_close_days": 2,
+        "stale_days": 3,
+        "stale_close_days": 1,
         "staled_PR_closing": 'This PR was closed because it has been stalled for 2 days with no activity.',
         "check_PR_target": 'Do not accept PR target from feature branch to the master branch.',
         "check_description": 'No Description on PR body. Please add a valid description.',
